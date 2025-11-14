@@ -15,4 +15,4 @@ app.add_middleware(
 
 @app.get("/")
 async def read_root():
-    return {"message": "Hello from FastAPI!, Githubに変更加えました"}
+    return {"message": "Hello from FastAPI!, Githubに変更を加えました"}

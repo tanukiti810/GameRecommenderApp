@@ -1,16 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import Mainpage from './components/Mainpage';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './components/Home';
+import Nomatch from './components/Nomatch';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <>
-      <Mainpage />
-    </>
+    <Router>
+      <Route>
+        <Route path="/" element={<Home />} />
+        <Route path="/Nomatch" element={<Nomatch />} />
+      </Route>
+    </Router>
   </React.StrictMode>
 );
