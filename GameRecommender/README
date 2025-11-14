@@ -1,0 +1,58 @@
+VSCodeでGitを使用してCommitする方法を確立しておいてくだいい
+VSCode左のソースコントロールでcommitできます
+
+node.jsをサイトからインストールしておいてください
+
+Dockerの使用方法
+Dockerを使用することで"React"、"FastAPI"の両方のサーバーを立ち上げることができます
+詳しくはdocker-compose.ymlを参照してください
+--------------------------------------------------------------------------------------
+初めて起動するとき（初回のみ）
+1.Docker Desktopアプリを立ち上げます
+
+2.次のコマンドをターミナルのGameRecommenderUseReact+FastAPIのある階層で実行 「docker-compose build」
+  例:C:users\env\Desktop\GameRecommenderUseReact+FastAPI>docker-compose build
+  するとfrontend, backendそれぞれのコンテナがbuildされます
+
+3.[+] Building 2/2
+  ✔ gamerecommenderusereactfastapi-backend   Built
+  ✔ gamerecommenderusereactfastapi-frontend  Built
+
+  このような出力がされたらbuild完了です
+  次のコマンドを先ほどと同じ階層で実行して2つのサーバーを立ち上げます 「docker-compose up」
+  例:C:users\env\Desktop\GameRecommenderUseReact+FastAPI>docker-compose up
+  [+] Running 2/2
+  ✔ Container gamerecommenderusereactfastapi-frontend-1  Recreated
+  ✔ Container gamerecommenderusereactfastapi-backend-1   Recreated
+  frontend-1  | > frontend@0.1.0 start
+  frontend-1  | > react-scripts start                                                             
+  backend-1   | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+  frontend-1  |   Local:            http://localhost:3000                                                                                    
+  frontend-1  |   On Your Network:  http://000.000.000.000:3000                                                                                   
+  frontend-1  | webpack compiled successfully
+  frontend-1  | Files successfully emitted, waiting for typecheck results...
+  frontend-1  | Issues checking in progress...
+  frontend-1  | No issues found.
+  
+  このような出力がされたらサーバーの立ち上げ完了です
+
+4.開発画面
+   http://localhost:3000 ---> React環境
+   http://localhost:8000 ---->FastAPI環境
+   
+   それぞれ出力を試してみてください
+   ReactのApp.tsxの{message: OOOOOO}(message: はFastAPIから受ける変数名)
+   OOOOOの部分を変更すると数秒おいて自動でリロードされるはずです(ホットリロード)
+
+5.作業終了時
+  先ほどのターミナルに移動すると何も打てない状態だと思います
+  ここからコンテナをストップするには"Ctrl + C"を2回押すことでストップされ、元のコンソール画面に戻ります
+  また作業を再開するときはすでにコンテナはbuildされているのでdocer-compose upのコマンドだけで大丈夫です
+   
+---------------------------------------------------------------------------------------------------
+-注意事項-
+dockerを立ち上げる際に重要なファイルはfrontend, backendディレクトリのDockerfile、そして親ディレクトリのdocker-compose.ymlです
+これらに変更を加えて適応しなかった場合、dockerは起動しません
+backend/appの中でpythonを動かしていますが、仮想環境を使用していません
+仮想環境を使用したい場合はbackendの中にvenvを導入し、backendの中のDockerfileに変更を加える必要があります
+環境変数を変更する際には十分調べた上、変更を加えてください

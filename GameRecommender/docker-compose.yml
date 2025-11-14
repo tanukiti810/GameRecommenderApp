@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      # ソースをコンテナにマウント（編集を即時反映）
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      # package.json をマウントして start スクリプトや依存差分が反映されるようにする
+      - ./frontend/package.json:/app/package.json:ro
+      # node_modules はコンテナ内に保持してホストの状態で上書きされないようにする
+      - /app/node_modules
+    environment:
+      # CRA が外部からアクセスできるようにホストを 0.0.0.0 に
+      - HOST=0.0.0.0
+      # chokidar のポーリングを有効化（Windows/OneDrive 環境でのファイル検知向上）
+      - CHOKIDAR_USEPOLLING=true
+      # ポーリング間隔を短めに調整（ミリ秒）
+      - CHOKIDAR_INTERVAL=100
+      # watchpack のポーリングも有効化（webpack ベースの監視改善用）
+      - WATCHPACK_POLLING=true
+    command: npm start
+
