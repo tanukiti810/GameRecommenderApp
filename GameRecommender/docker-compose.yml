@@ -21,8 +21,6 @@ services:
       - ./frontend/public:/app/public
       # package.json をマウントして start スクリプトや依存差分が反映されるようにする
       - ./frontend/package.json:/app/package.json:ro
-      # node_modules はコンテナ内に保持してホストの状態で上書きされないようにする
-      - /app/node_modules
     environment:
       # CRA が外部からアクセスできるようにホストを 0.0.0.0 に
       - HOST=0.0.0.0

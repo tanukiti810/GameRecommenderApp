@@ -11,10 +11,10 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Router>
-      <Route>
+      <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Nomatch" element={<Nomatch />} />
-      </Route>
+      </Routes>
     </Router>
   </React.StrictMode>
 );
