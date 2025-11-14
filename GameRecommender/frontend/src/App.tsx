@@ -20,7 +20,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>TypeScript + FastAPI, github変更加えました</h1>
+      <h1>TypeScript + FastAPI, githubに変更加えました</h1>
       <p>{message}</p>
     </div>
   );
