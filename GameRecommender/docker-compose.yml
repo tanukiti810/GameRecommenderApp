@@ -9,6 +9,10 @@ services:
     volumes:
       - ./backend/app:/app/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/game_recommender_db
 
   frontend:
     build:
@@ -31,4 +35,15 @@ services:
       # watchpack のポーリングも有効化（webpack ベースの監視改善用）
       - WATCHPACK_POLLING=true
     command: npm start
+
+  mongo:
+    image: mongo:7
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
 
