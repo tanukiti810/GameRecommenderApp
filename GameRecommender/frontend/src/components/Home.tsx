@@ -92,7 +92,7 @@ const Home = () => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Responsive drawer
+                        Game Recommener
                     </Typography>
                 </Toolbar>
             </AppBar>
