@@ -1,0 +1,226 @@
+[
+  {
+    "appid": 10,
+    "name": "Counter-Strike",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 20,
+    "name": "Team Fortress Classic",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 30,
+    "name": "Day of Defeat",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 40,
+    "name": "Deathmatch Classic",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 50,
+    "name": "Half-Life: Opposing Force",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 60,
+    "name": "Ricochet",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 70,
+    "name": "Half-Life",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 80,
+    "name": "Counter-Strike: Condition Zero",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 100,
+    "name": "Counter-Strike: Condition Zero",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 130,
+    "name": "Half-Life: Blue Shift",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 220,
+    "name": "Half-Life 2",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 240,
+    "name": "Counter-Strike: Source",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 280,
+    "name": "Half-Life: Source",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 300,
+    "name": "Day of Defeat: Source",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 320,
+    "name": "Half-Life 2: Deathmatch",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 340,
+    "name": "Half-Life 2: Lost Coast",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 360,
+    "name": "Half-Life Deathmatch: Source",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 380,
+    "name": "Half-Life 2: Episode One",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 400,
+    "name": "Portal",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 420,
+    "name": "Half-Life 2: Episode Two",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 440,
+    "name": "Team Fortress 2",
+    "genres": [
+      "Action",
+      "Free To Play"
+    ]
+  },
+  {
+    "appid": 500,
+    "name": "Left 4 Dead",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 550,
+    "name": "Left 4 Dead 2",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 570,
+    "name": "Dota 2",
+    "genres": [
+      "Action",
+      "Strategy",
+      "Free To Play"
+    ]
+  },
+  {
+    "appid": 620,
+    "name": "Portal 2",
+    "genres": [
+      "Action",
+      "Adventure"
+    ]
+  },
+  {
+    "appid": 630,
+    "name": "Alien Swarm",
+    "genres": [
+      "Action",
+      "Free To Play"
+    ]
+  },
+  {
+    "appid": 659,
+    "name": "Portal 2",
+    "genres": [
+      "Action",
+      "Adventure"
+    ]
+  },
+  {
+    "appid": 730,
+    "name": "Counter-Strike 2",
+    "genres": [
+      "Action",
+      "Free To Play"
+    ]
+  },
+  {
+    "appid": 1002,
+    "name": "Rag Doll Kung Fu",
+    "genres": [
+      "Indie"
+    ]
+  },
+  {
+    "appid": 1200,
+    "name": "Red Orchestra: Ostfront 41-45",
+    "genres": [
+      "Action"
+    ]
+  },
+  {
+    "appid": 1250,
+    "name": "Killing Floor",
+    "genres": [
+      "Action"
+    ]
+  }
+]
