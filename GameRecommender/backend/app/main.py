@@ -8,6 +8,7 @@ import time
 
 app = FastAPI()
 
+#サンプル用の保存システム
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

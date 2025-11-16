@@ -1,0 +1,91 @@
+{
+  "730": {
+    "name": "Counter-Strike 2",
+    "genres": [
+      "Action",
+      "Free To Play"
+    ],
+    "categories": [
+      "Multi-player",
+      "Cross-Platform Multiplayer",
+      "Steam Trading Cards",
+      "Steam Workshop",
+      "In-App Purchases",
+      "Adjustable Text Size",
+      "Camera Comfort",
+      "Color Alternatives",
+      "Custom Volume Controls",
+      "Playable without Timed Input",
+      "Stereo Sound",
+      "Surround Sound",
+      "Valve Anti-Cheat enabled",
+      "Stats",
+      "Remote Play on Phone",
+      "Remote Play on Tablet",
+      "Remote Play on TV",
+      "Steam Timeline"
+    ],
+    "price": 0.0,
+    "discount_percent": 0,
+    "release_date": "21 Aug, 2012",
+    "metacritic_score": null,
+    "is_free": true
+  },
+  "570": {
+    "name": "Dota 2",
+    "genres": [
+      "Action",
+      "Strategy",
+      "Free To Play"
+    ],
+    "categories": [
+      "Multi-player",
+      "Co-op",
+      "Steam Trading Cards",
+      "Steam Workshop",
+      "SteamVR Collectibles",
+      "In-App Purchases",
+      "Camera Comfort",
+      "Color Alternatives",
+      "Custom Volume Controls",
+      "Valve Anti-Cheat enabled",
+      "Steam Timeline"
+    ],
+    "price": 0.0,
+    "discount_percent": 0,
+    "release_date": "9 Jul, 2013",
+    "metacritic_score": 90,
+    "is_free": true
+  },
+  "582010": {
+    "name": "Monster Hunter: World",
+    "genres": [
+      "Action"
+    ],
+    "categories": [
+      "Single-player",
+      "Multi-player",
+      "Co-op",
+      "Steam Achievements",
+      "Steam Trading Cards",
+      "Adjustable Text Size",
+      "Camera Comfort",
+      "Custom Volume Controls",
+      "Keyboard Only Option",
+      "Stereo Sound",
+      "Surround Sound",
+      "Partial Controller Support",
+      "Steam Cloud",
+      "Stats",
+      "Steam Leaderboards",
+      "Remote Play on Tablet",
+      "HDR available",
+      "Family Sharing"
+    ],
+    "price": 2990.0,
+    "discount_percent": 0,
+    "release_date": "9 Aug, 2018",
+    "metacritic_score": 88,
+    "is_free": false
+  }
+}
