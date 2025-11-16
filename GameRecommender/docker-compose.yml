@@ -13,7 +13,6 @@ services:
       - mongo
     environment:
       - MONGO_URL=mongodb://mongo:27017/game_recommender_db
-      - STEAM_API_KEY=${STEAM_API_KEY}
 
   frontend:
     build:
