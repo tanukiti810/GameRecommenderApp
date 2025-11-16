@@ -35,6 +35,7 @@ services:
       - CHOKIDAR_INTERVAL=100
       # watchpack のポーリングも有効化（webpack ベースの監視改善用）
       - WATCHPACK_POLLING=true
+      - NODE_OPTIONS=--max-old-space-size=8192
     command: npm start
 
   mongo:
