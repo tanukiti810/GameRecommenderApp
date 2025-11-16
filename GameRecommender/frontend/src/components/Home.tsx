@@ -16,8 +16,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import App from '../App';
-import Nomatch from './Nomatch';
-import { Route, Router, Routes } from 'react-router-dom';
+import ColorTheme from '../color-theme/ColorTheme';
 
 const drawerWidth = 240;
 
@@ -77,6 +76,7 @@ const Home = () => {
             <AppBar
                 position="fixed"
                 sx={{
+                    backgroundColor: ColorTheme.palette.primary.main,
                     width: { sm: `calc(100% - ${drawerWidth}px)` },
                     ml: { sm: `${drawerWidth}px` },
                 }}
