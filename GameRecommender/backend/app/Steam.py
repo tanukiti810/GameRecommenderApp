@@ -1,5 +1,5 @@
 """
-steam.py
+Steam.py
 
 やってることの全体像：
 
@@ -11,7 +11,7 @@ steam.py
 ※ このファイルは「バックエンド用バッチスクリプト」という位置づけ。
    普段は FastAPI が動いてて、
    データをまとめて入れたいときだけ
-   `docker compose exec backend python app/steam.py`
+   `docker compose exec backend python app/Steam.py`
    みたいに叩いて使うイメージ。
 """
 
@@ -22,6 +22,25 @@ import json    # JSON文字列 ⇔ Pythonのdict に変換するライブラリ
 import requests          # HTTPリクエスト(外部APIを叩く)用ライブラリ
 from tqdm import tqdm    # 進捗バー表示用ライブラリ
 from pymongo import MongoClient  # MongoDB に接続するためのライブラリ
+
+
+# ==============================
+# Steam Web API キーを環境変数から読む
+# ==============================
+
+# docker-compose.yml の backend.environment で
+#   STEAM_API_KEY=${STEAM_API_KEY}
+# として渡した値を取得する
+STEAM_API_KEY = os.environ.get("STEAM_API_KEY")
+
+# キーが設定されていないと、このスクリプトは正しく動かないので即エラーにする
+if not STEAM_API_KEY:
+    raise RuntimeError(
+        "STEAM_API_KEY が環境変数に設定されてないよ。\n"
+        ".env に STEAM_API_KEY=... を書いて、\n"
+        "docker-compose.yml の backend.environment に "
+        "STEAM_API_KEY=${STEAM_API_KEY} があるか確認して。"
+    )
 
 
 # ==============================
@@ -67,20 +86,28 @@ def fetch_and_save_games(limit: int | None = 1000):
 
     # --- 1. 全アプリ一覧(GetAppList) を取得する ---
 
-    # Steam の全アプリ一覧を返す公式 API
-    # ここでは "applist" の中に "apps": [ {appid, name}, ... ] が入ってくる
-    url = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
+    # Steam の全アプリ一覧を返す公式 API のベースURL
+    base_url = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
 
-    # timeout=20 は「20秒待っても返事が来なかったら諦める」という意味
-    res = requests.get(url, timeout=20)
-    
+    # クエリパラメータを dict でまとめる
+    #   key   : さっき発行された Steam Web API キー
+    #   format: 念のため JSON 形式を指定（デフォルトも多分JSONだけど明示しておく）
+    params = {
+        "key": STEAM_API_KEY,
+        "format": "json",
+    }
+
+    # requests.get(..., params=params) にすると
+    #   base_url?key=XXX&format=json
+    # みたいな形でアクセスしてくれる
+    res = requests.get(base_url, params=params, timeout=20)
+
+    # デバッグ用ログ（今は一旦残しておくと挙動が見やすい）
     print("DEBUG status:", res.status_code)
     print("DEBUG url:", res.url)
-    print("DEBUG body head:", res.text[:300])  # 先頭300文字だけ表示
+    print("DEBUG body head:", res.text[:200])
 
-
-    # HTTPステータスコード(404, 500など)がエラー系だったら例外を投げる
-    # → ここでエラーになったら try/except していないので、そのままクラッシュしてOK
+    # ステータスコードが 4xx / 5xx 系なら例外を投げる（404 とか500）
     res.raise_for_status()
 
     # JSON 文字列 → Python の dict に変換
@@ -104,11 +131,20 @@ def fetch_and_save_games(limit: int | None = 1000):
         # cc=JP : 日本のストア情報
         # l=english : 説明文等は英語
         #   ※日本語がよければ "japanese" に変更してもOK
-        detail_url = f"https://store.steampowered.com/api/appdetails?appids={appid}&cc=JP&l=english"
+        detail_url = "https://store.steampowered.com/api/appdetails"
+
+        # クエリパラメータも dict で渡す
+        detail_params = {
+            "appids": appid,
+            "cc": "JP",
+            "l": "english",
+            # ここには key 無くても動くけど、揃えておきたいなら入れてOK
+            # "key": STEAM_API_KEY,
+        }
 
         try:
             # 1本のゲームの詳細情報を取得
-            detail_res = requests.get(detail_url, timeout=10)
+            detail_res = requests.get(detail_url, params=detail_params, timeout=10)
             # HTTPエラーがあれば例外を投げる
             detail_res.raise_for_status()
 
@@ -195,14 +231,15 @@ def fetch_and_save_games(limit: int | None = 1000):
 # このブロックの意味：
 #
 #   ・Pythonファイルは2パターンの使われ方がある
-#       1. スクリプトとして直接実行 → `python steam.py`
-#       2. 他のファイルから import される → `import steam`
+#       1. スクリプトとして直接実行 → `python Steam.py`
+#       2. 他のファイルから import される → `import Steam`
 #
 #   ・if __name__ == "__main__": は
 #      「直接実行されたときだけこの中を動かす」
 #      というおまじない。
 #
-#   ・今回の用途だと `docker compose exec backend python app/steam.py`
+#   ・今回の用途だと
+#       `docker compose exec backend python app/Steam.py`
 #     のように「直接実行」するので、ここが動く。
 if __name__ == "__main__":
     # とりあえずテスト中は 1000件だけ
