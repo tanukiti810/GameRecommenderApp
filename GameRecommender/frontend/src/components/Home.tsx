@@ -20,6 +20,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import App from '../App';
 import { ColorTheme } from '../color-theme/ColorTheme';
+import Hand_over from './Hand_over';
 
 const drawerWidth = 240;
 
@@ -169,7 +170,8 @@ const Home = () => {
             </Drawer>
             <Main open={open}>
                 <DrawerHeader />
-                <App />
+                {/* <App /> */}
+                <Hand_over />
             </Main>
         </Box>
     );
