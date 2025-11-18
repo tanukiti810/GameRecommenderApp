@@ -102,3 +102,10 @@ async def debug_games(limit: int = 10):
 # 「データ突っ込みたいときだけ」コンテナ内で python app/main.py を叩く
 if __name__ == "__main__":
     save_sample_games_to_mongo()
+#ここはコミットされないのか
+
+"""
+#とりあえずmainでサーチ用の関数を作る
+@app.get("/search/games")
+async def search_games(name: str )
+"""
