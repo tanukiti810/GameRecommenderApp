@@ -90,7 +90,7 @@ def _convert_id(doc: dict[str, Any]) -> dict[str, Any]:
     return d
 
 @app.get("/debug/games")
-async def debug_games(limit: int = 5):
+async def debug_games(limit: int = 100):
     total = games_col.count_documents({})
     cursor = games_col.find({}).limit(limit)
     docs = [_convert_id(doc) for doc in cursor]
