@@ -91,7 +91,7 @@ def _convert_id(doc: dict[str, Any]) -> dict[str, Any]:
 
 #クエリを設定している
 @app.get("/debug/games")
-async def debug_games(limit: int = 10):
+async def debug_games(limit: int = 100):
     total = games_col.count_documents({})
     cursor = games_col.find({}).limit(limit)
     docs = [_convert_id(doc) for doc in cursor]
