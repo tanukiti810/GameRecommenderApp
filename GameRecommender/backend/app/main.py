@@ -4,6 +4,7 @@ import requests
 import time
 import os
 from bson import ObjectId
+from typing import Any
 
 from pymongo import MongoClient
 
@@ -82,23 +83,21 @@ def save_sample_games_to_mongo():
         time.sleep(0.3)
     print("保存完了！")
     
-# uvicorn で起動するときはここは実行されない
-# [データ突っ込みたいときだけ] pythonで直接やる
-if __name__ == "__main__":
-    save_sample_games_to_mongo()
-
-
-def convert_id(doc):
-    doc["_id"] = str(doc["_id"])
-    return doc
+# ====== デバッグ用：Mongoに何件入ってるか見るAPI ======
+def _convert_id(doc: dict[str, Any]) -> dict[str, Any]:
+    d = dict(doc)
+    d["_id"] = str(d.get("_id"))
+    return d
 
 @app.get("/debug/games")
-async def debug_games():
-    count = games_col.count_documents({})
-    docs = list(games_col.find().limit(5))
-    docs = [convert_id(d) for d in docs]
+async def debug_games(limit: int = 5):
+    total = games_col.count_documents({})
+    cursor = games_col.find({}).limit(limit)
+    docs = [_convert_id(doc) for doc in cursor]
+    return {"total": total,"sample_limit" : limit, "games": docs}
 
-    return {
-        "count": count,
-        "sample": docs,
-    }
+
+# uvicornで起動したときはここは動かない
+# 「データ突っ込みたいときだけ」コンテナ内で python app/main.py を叩く
+if __name__ == "__main__":
+    save_sample_games_to_mongo()
