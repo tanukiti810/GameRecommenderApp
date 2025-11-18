@@ -20,6 +20,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { ColorTheme } from '../color-theme/ColorTheme';
 import HandOver from './HandOver';
+import { Height } from '@mui/icons-material';
 
 const drawerWidth = 240;
 
@@ -95,7 +96,11 @@ const Home = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{
+            display: 'flex',
+            background: 'rgba(0,0,0,0.5)',
+            height: window.innerHeight
+                    }}>
             <CssBaseline />
             <AppBar
                 position="fixed"

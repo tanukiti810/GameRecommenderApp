@@ -3,7 +3,8 @@ import { createTheme } from "@mui/material";
 export const ColorTheme = createTheme({
     palette: {
         primary: {
-            main: '#F44336'
+            main: 'rgba(0, 0, 0, 0.2)',
+
         }
     }
 })
