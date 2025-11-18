@@ -234,10 +234,3 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     </AppTheme>
   );
 }
-// const SignIn = () => {
-//   return (
-//     <div>SignIn</div>
-//   )
-// }
-
-// export default SignIn
