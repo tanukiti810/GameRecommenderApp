@@ -7,6 +7,8 @@ import Home from './components/Home';
 import Nomatch from './components/Nomatch';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import ChatAI from './components/SelectComponents/ChatAI';
+import ChooseGame from './components/SelectComponents/ChooseGame';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,6 +18,8 @@ root.render(
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/Chat" element={<ChatAI />} />
+        <Route path="/Choose" element={<ChooseGame />} />
         <Route path="/Sign-In" element={<SignIn />} />
         <Route path="/Sign-Up" element={<SignUp />} />
         <Route path="/Nomatch" element={<Nomatch />} />
