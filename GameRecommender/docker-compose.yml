@@ -20,22 +20,14 @@ services:
       context: ./frontend
     ports:
       - "3000:3000"
+    mem_limit: 4g
     volumes:
-      # ソースをコンテナにマウント（編集を即時反映）
-      - ./frontend/src:/app/src
-      - ./frontend/public:/app/public
-      # package.json をマウントして start スクリプトや依存差分が反映されるようにする
-      - ./frontend/package.json:/app/package.json:ro
+      - ./frontend:/app
     environment:
-      # CRA が外部からアクセスできるようにホストを 0.0.0.0 に
       - HOST=0.0.0.0
-      # chokidar のポーリングを有効化（Windows/OneDrive 環境でのファイル検知向上）
+      - NODE_OPTIONS=--max-old-space-size=4096
       - CHOKIDAR_USEPOLLING=true
-      # ポーリング間隔を短めに調整（ミリ秒）
-      - CHOKIDAR_INTERVAL=100
-      # watchpack のポーリングも有効化（webpack ベースの監視改善用）
-      - WATCHPACK_POLLING=true
-      - NODE_OPTIONS=--max-old-space-size=8192
+      - CHOKIDAR_INTERVAL=300
     command: npm start
 
   mongo:
@@ -48,4 +40,5 @@ services:
 
 volumes:
   mongo_data:
+
 
