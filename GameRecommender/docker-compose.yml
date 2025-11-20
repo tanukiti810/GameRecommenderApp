@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     build:
@@ -12,7 +10,7 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URL=mongodb://mongo:27017/game_recommender_db
+      - MONGO_URL=${MONGO_URL}
       - STEAM_API_KEY=${STEAM_API_KEY}
 
   frontend:
