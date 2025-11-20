@@ -1,3 +1,4 @@
+import { Button } from '@mui/material'
 import React from 'react'
 
 const ChatAI = () => {
@@ -6,7 +7,8 @@ const ChatAI = () => {
       ChatAI
       <br />
       <input type="text" />
-      </div>
+      <Button variant="outlined">send</Button>
+    </div>
   )
 }
 
