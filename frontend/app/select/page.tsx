@@ -11,46 +11,47 @@ const GameSelect = () => {
 
   return (
     <>
-      <div>Select pageaaaa</div>
+      <div>
+        Select 
+        <Box
+          sx={{
+            '& button': {
+              m: 2,
+              borderWidth: 3,
+              fontSize: '0.9rem',
+              padding: '14px 36px',
+              width: '300px',
+              height: '100px'
+            }
+          }}
+        >
+          <div className="ButtonBox">
+            <div className="BoxContainer">
+              {/* Chat ページへ */}
+              <Button
+                variant="outlined"
+                className="largeButton"
+                onClick={() => router.push('/select/chat')}
+              >
+                Wanna Find Out??
+                <br />
+                Let's Chat!!
+              </Button>
 
-      <Box
-        sx={{
-          '& button': {
-            m: 2,
-            borderWidth: 3,
-            fontSize: '0.9rem',
-            padding: '14px 36px',
-            width: '300px',
-            height: '100px'
-          }
-        }}
-      >
-        <div className="ButtonBox">
-          <div className="BoxContainer">
-            {/* Chat ページへ */}
-            <Button
-              variant="outlined"
-              className="largeButton"
-              onClick={() => router.push('/select/chat')}
-            >
-              Wanna Find Out??
-              <br />
-              Let's Chat!!
-            </Button>
-
-            {/* Choose ページへ */}
-            <Button
-              variant="outlined"
-              className="largeButton"
-              onClick={() => router.push('/select/choose')}
-            >
-              wanna choose questions
-              <br />
-              your like??
-            </Button>
+              {/* Choose ページへ */}
+              <Button
+                variant="outlined"
+                className="largeButton"
+                onClick={() => router.push('/select/choose')}
+              >
+                wanna choose questions
+                <br />
+                your like??
+              </Button>
+            </div>
           </div>
-        </div>
-      </Box>
+        </Box>
+      </div>
     </>
   );
 };
