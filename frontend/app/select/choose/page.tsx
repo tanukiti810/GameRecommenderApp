@@ -20,7 +20,7 @@ const ChoosePage = () => {
 
   return (
     <>
-      <div> ChooseGamediv</div>
+      <div>Choose</div>
       <div className='ChooseBox select_Genre'>
         <Button variant="outlined" onClick={() => sendData("ジャンル1")}>ジャンル１</Button>
         <Button variant="outlined" onClick={() => sendData("ジャンル2")}>ジャンル２</Button>
