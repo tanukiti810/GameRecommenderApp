@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URL: ${MONGO_URL}
+      STEAM_API_KEY: ${STEAM_API_KEY}
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app     
+      - /app/node_modules
+    environment:
+      HOST: 0.0.0.0
+      NODE_OPTIONS: --max-old-space-size=4096
+      CHOKIDAR_USEPOLLING: "true"
+    command: npm run dev
+
+  mongo:
+    image: mongo:7
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+  frontend_node_modules:
+
+
