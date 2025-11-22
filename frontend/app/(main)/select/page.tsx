@@ -12,7 +12,17 @@ const GameSelect = () => {
   return (
     <>
       <div>
-        Select 
+        <div className='select-header'>
+          <div>Select</div>
+          <div>
+            <Button
+                variant="outlined"
+                className="small"
+                onClick={() => router.push('/sign-in')}
+              >Login</ Button>
+          </div>
+        </div>
+         
         <Box
           sx={{
             '& button': {
