@@ -4,7 +4,12 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div style={{ padding: "20px", background: "#fffaf3", minHeight: "100vh" }}>
+    <div style={{
+      padding: "20px",
+      height: "100vh",
+      boxSizing: "border-box",
+      overflow: "hidden"
+    }}>
       {children}
     </div>
   );
