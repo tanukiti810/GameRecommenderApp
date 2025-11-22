@@ -1,9 +1,9 @@
-import './globals.css';
-import type { Metadata } from 'next';
+import "./globals.css";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Game Recommender',
-  description: 'Game recommendation app',
+  title: "Game Recommender",
+  description: "Game recommendation app",
 };
 
 export default function RootLayout({
@@ -17,4 +17,7 @@ export default function RootLayout({
     </html>
   );
 }
+
+
+
 
