@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -13,10 +15,10 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import ForgotPassword from '../(components)/ForgotPassword/ForgotPassword';
-import AppTheme from '../../shared-theme/AppTheme';
+import ForgotPassword from '../../../components/auth/ForgotPassword';
+import AppTheme from '../../../styles/shared-theme/AppTheme';
 // import ColorModeSelect from '../shared-theme/ColorModeSelect';
-import { GoogleIcon, FacebookIcon } from '../../shared-theme/customizations/CustomIcon';
+import { GoogleIcon, FacebookIcon } from '../../../styles/shared-theme/customizations/CustomIcon';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
