@@ -15,13 +15,13 @@ Steam.py
    みたいに叩いて使うイメージ。
 """
 
-import os      # OS（環境変数など）にアクセスするための標準ライブラリ
+
 import time    # スリープ(待ち時間)を入れるための標準ライブラリ
 import json    # JSON文字列 ⇔ Pythonのdict に変換するライブラリ
 
 import requests          # HTTPリクエスト(外部APIを叩く)用ライブラリ
 from tqdm import tqdm    # 進捗バー表示用ライブラリ
-from pymongo import MongoClient  # MongoDB に接続するためのライブラリ
+from .db import games_col
 
 
 # ==============================
@@ -41,34 +41,6 @@ if not STEAM_API_KEY:
         "docker-compose.yml の backend.environment に "
         "STEAM_API_KEY=${STEAM_API_KEY} があるか確認して。"
     )
-
-
-# ==============================
-# MongoDB に接続する
-# ==============================
-
-# docker-compose.yml の backend サービスに書いてある環境変数を読む
-#   environment:
-#     - MONGO_URL=mongodb://mongo:27017/game_recommender_db
-#
-# os.environ は「環境変数が入っている辞書」だと思えばOK
-MONGO_URL = os.environ.get("MONGO_URL")
-
-# MONGO_URL が設定されてなかったら、このスクリプトは動かせないので強制終了
-if not MONGO_URL:
-    raise RuntimeError("MONGO_URL が環境変数に設定されてないよ（docker-compose.yml を確認して）")
-
-# MongoDB クライアントを作成
-# ここでまだ実際に接続チェックはされず、「接続する準備完了」くらいのイメージ
-client = MongoClient(MONGO_URL)
-
-# 接続先 DB を指定
-# docker-compose で指定している DB 名: game_recommender_db
-db = client["game_recommender_db"]
-
-# 使用するコレクション（テーブルっぽいもの）を指定
-# 存在しなくても、初めて insert したタイミングで自動で作られる
-games_col = db["steam_games"]
 
 
 # ==============================

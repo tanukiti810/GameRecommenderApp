@@ -2,12 +2,11 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 import time
-import os
 from bson import ObjectId
 from typing import Any
 from pydantic import BaseModel
+from .db import games_col
 
-from pymongo import MongoClient
 
 app = FastAPI()
 
@@ -33,16 +32,7 @@ def choose_game(data: Choice):
 async def read_root():
     return {"message": "Hello from FastAPI!, Githubに変更加えました"}
 
-#=====================MongoDB接続設定=====================
-MONGO_URL = os.environ.get("MONGO_URL")
-if not MONGO_URL:
-    raise RuntimeError("MONGO_URL が環境変数に設定されてないよ")
 
-client = MongoClient(MONGO_URL)
-
-# docker-composeで指定したDB名に合わせる
-db = client["game_recommender_db"]
-games_col = db["steam_games"] #なければ自動で作られる
 
 
 # ===========Steam から1ゲーム分の情報をとる関数===========
