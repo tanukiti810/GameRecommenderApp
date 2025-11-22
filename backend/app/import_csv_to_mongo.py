@@ -15,27 +15,9 @@ import json          # JSON文字列をPythonの型に変換するときに使�
 import pandas as pd  # CSV を読み込むライブラリ
 from typing import Any
 from pymongo import MongoClient
+from .db import games_col
 
 
-# ============================================================================
-# 1. MongoDB に接続する準備
-# ============================================================================
-
-# docker-compose.yml に書いた MONGO_URL を読む
-MONGO_URL = os.environ.get("MONGO_URL")
-
-# もし設定されてない場合はスクリプトを止める
-if not MONGO_URL:
-    raise RuntimeError("環境変数 MONGO_URL が設定されていないよ！ docker-compose.yml を確認してね。")
-
-# MongoDB に接続（まだ実際にアクセスはしない「準備だけ」）
-client = MongoClient(MONGO_URL)
-
-# 使用するデータベースを指定
-db = client["game_recommender_db"]
-
-# この中に保存される
-games_col = db["steam_games"]
 
 
 # ============================================================================
