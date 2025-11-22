@@ -1,21 +1,24 @@
 body {
   background: radial-gradient(circle, #c8f4ff, #5bd9ff);
-  /* color: rgb(233, 233, 233); */
+  margin: 0;
+  padding: 0;
 }
 
 .select-header {
   width: 100%;
+   height: 20%;
   display: flex;
   justify-content: space-between;
 }
 
 .ButtonBox {
   width: 100%;
-  height: 100vh;       
+  height: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 
 .BoxContainer {
   display: flex;
@@ -23,13 +26,13 @@ body {
 }
 
 .largeButton {
-  width: 200px;
-  height: 80px;
+  width: 300px;
+  height: 100px;
 }
 
 .ChooseBox {
   width: 50%;
-  height: 30%;
+  height: 80px;
   margin: 0 auto;
   margin-top: 100px;
   display: flex;

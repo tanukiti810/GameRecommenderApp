@@ -11,18 +11,21 @@ const GameSelect = () => {
 
   return (
     <>
-      <div>
+      <div style={{
+        height: '100vh', 
+        boxSizing: 'border-box'
+      }}>
         <div className='select-header'>
-          <div>Select</div>
+          <div>select components</div>
           <div>
             <Button
-                variant="outlined"
-                className="small"
-                onClick={() => router.push('/sign-in')}
-              >Login</ Button>
+              variant="outlined"
+              className="small"
+              onClick={() => router.push('/sign-in')}
+            >Login</ Button>
           </div>
         </div>
-         
+
         <Box
           sx={{
             '& button': {
@@ -30,8 +33,6 @@ const GameSelect = () => {
               borderWidth: 3,
               fontSize: '0.9rem',
               padding: '14px 36px',
-              width: '300px',
-              height: '100px'
             }
           }}
         >
