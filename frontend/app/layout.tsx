@@ -1,3 +1,4 @@
+import Particles from "../components/main/Particles";
 import "./globals.css";
 import type { Metadata } from "next";
 
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body>
+        <Particles />
+        {children}
+      </body>
     </html>
   );
 }

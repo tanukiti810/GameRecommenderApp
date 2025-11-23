@@ -1,1 +1,51 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+  background: radial-gradient(circle, #30343A, #202020);
+}
+
+
+/* .particles-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; 
+} */
+
+.text {
+  position: relative;
+  z-index: 1;       /* 前面に文字を表示 */
+  display: flex;
+  height: 80vh;
+  width: 100%;
+}
+
+h1 {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 180px;
+  letter-spacing: 1vw;
+  color: #FEFBFF;
+}
+
+.genreButton {
+  border-color: #135389;
+  color: #135389;
+}
+
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
 

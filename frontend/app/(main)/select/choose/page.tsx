@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import React from 'react'
 import '../../../App.css'
 
@@ -22,20 +22,33 @@ const ChoosePage = () => {
     <>
       <div>Choose</div>
       <div className='ChooseBox select_Genre'>
-        <Button variant="outlined" onClick={() => sendData("Action")}>アクション</Button>
-        <Button variant="outlined" onClick={() => sendData("Adventure")}>アドベンチャー</Button>
-        <Button variant="outlined" onClick={() => sendData("RPG")}>RPG</Button>
-        <Button variant="outlined" onClick={() => sendData("ジャンル4")}>ジャンル４</Button>
-        <Button variant="outlined" onClick={() => sendData("ジャンル5")}>ジャンル５</Button>
-        <Button variant="outlined" onClick={() => sendData("ジャンル6")}>ジャンル６</Button>
-      </div>
-      <div className='ChooseBox select_Type'>
-        <Button variant="outlined" onClick={() => sendData("Single-player")}>シングルプレイヤー</Button>
-        <Button variant="outlined" onClick={() => sendData("Multi-player")}>マルチプレイヤー</Button>
-        <Button variant="outlined" onClick={() => sendData("")}>タイプ３</Button>
-        <Button variant="outlined" onClick={() => sendData("タイプ3")}>タイプ４</Button>
-        <Button variant="outlined" onClick={() => sendData("タイプ4")}>タイプ５</Button>
-        <Button variant="outlined" onClick={() => sendData("タイプ5")}>タイプ６</Button>
+        <Box
+          sx={{
+            '& button': {
+              m: 2,
+              borderColor: '#135389',
+              color: '#135389',
+              borderWidth: 3,
+              fontSize: '0.9rem',
+              padding: '14px 36px',
+            }
+          }}>
+          <Button variant="outlined" onClick={() => sendData("Action")}>アクション</Button>
+          <Button variant="outlined" onClick={() => sendData("Adventure")}>アドベンチャー</Button>
+          <Button variant="outlined" onClick={() => sendData("RPG")}>RPG</Button>
+          <Button variant="outlined" onClick={() => sendData("")}>シューティング</Button>
+          <Button variant="outlined" onClick={() => sendData("ジャンル5")}>アクションアドベンチャー</Button>
+          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>シミュレーション</Button>
+          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>サンドボックス</Button>
+          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>ストラテジー</Button>
+          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>タクティクス</Button>
+          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>スポーツ</Button>
+          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>レース</Button>
+          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>カジュアル</Button>
+          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>ホラー</Button>
+          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>サスペンス</Button>
+          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>インディー</Button>
+        </Box>
       </div>
     </>
 

@@ -30,6 +30,8 @@ const GameSelect = () => {
           sx={{
             '& button': {
               m: 2,
+              borderColor: '#135389',
+              color: '#135389',
               borderWidth: 3,
               fontSize: '0.9rem',
               padding: '14px 36px',
