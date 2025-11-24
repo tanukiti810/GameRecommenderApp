@@ -1,27 +1,47 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
-
   background: #FBFCFF;
 }
 
+a {
+  color: #FBFCFF;
+  text-decoration: none;
+}
 
-/* .particles-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
+.flex {
+  display: flex;
+}
+
+.header {
   width: 100%;
-  height: 100%;
-  z-index: 0; 
-} */
+  height: 8.5vh;
+  padding: 4px;
+  background-color: #2B262E;
+  display: flex;
+  align-items: center;
+}
+
+.header-outline{
+  margin: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.header-text {
+  font-size: 1.5rem;
+}
 
 .text {
   position: relative;
-  z-index: 1;       /* 前面に文字を表示 */
+  z-index: 1;
   display: flex;
-  height: 80vh;
+  height: 60vh;
   width: 100%;
 }
 
@@ -29,7 +49,6 @@ h1 {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   font-size: 180px;
-  /* letter-spacing: 1vw; */
   color: #2B262E;
 }
 
@@ -38,7 +57,7 @@ h1 {
   color: #344699;
 }
 
-#particles-js {
+/* #particles-js {
   position: fixed;
   top: 0;
   left: 0;
@@ -47,5 +66,25 @@ h1 {
   inset: 0;
   z-index: 0;
   pointer-events: none;
+} */
+
+
+.choosePage {
+  width: 100%;
+  height: 100vh;
 }
 
+.ChooseBox {
+  width: 75%;
+  background-color: aquamarine;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.side-bar {
+  width: 25%;
+  background-color: aqua;
+}

@@ -13,9 +13,6 @@ const page = () => {
       <div className="text">
         <h1 id="text">FOR<br></br>ALL GAMERS</h1>
       </div>
-      <div>
-        <Button variant="outlined" onClick={() => router.push('/select')}>button</Button>
-      </div>
     </>
   )
 }
