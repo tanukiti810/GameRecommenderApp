@@ -26,8 +26,8 @@ const ChoosePage = () => {
           sx={{
             '& button': {
               m: 2,
-              borderColor: '#135389',
-              color: '#135389',
+              borderColor: '#344699',
+              color: '#344699',
               borderWidth: 3,
               fontSize: '0.9rem',
               padding: '14px 36px',
@@ -36,18 +36,18 @@ const ChoosePage = () => {
           <Button variant="outlined" onClick={() => sendData("Action")}>アクション</Button>
           <Button variant="outlined" onClick={() => sendData("Adventure")}>アドベンチャー</Button>
           <Button variant="outlined" onClick={() => sendData("RPG")}>RPG</Button>
-          <Button variant="outlined" onClick={() => sendData("")}>シューティング</Button>
-          <Button variant="outlined" onClick={() => sendData("ジャンル5")}>アクションアドベンチャー</Button>
-          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>シミュレーション</Button>
-          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>サンドボックス</Button>
-          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>ストラテジー</Button>
-          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>タクティクス</Button>
-          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>スポーツ</Button>
-          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>レース</Button>
-          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>カジュアル</Button>
-          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>ホラー</Button>
-          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>サスペンス</Button>
-          <Button variant="outlined" onClick={() => sendData("ジャンル6")}>インディー</Button>
+          <Button variant="outlined" onClick={() => sendData("Shooting")}>シューティング</Button>
+          <Button variant="outlined" onClick={() => sendData("ActionAdventure")}>アクションアドベンチャー</Button>
+          <Button variant="outlined" onClick={() => sendData("Simulation")}>シミュレーション</Button>
+          <Button variant="outlined" onClick={() => sendData("SandBox")}>サンドボックス</Button>
+          <Button variant="outlined" onClick={() => sendData("Strategy")}>ストラテジー</Button>
+          <Button variant="outlined" onClick={() => sendData("Tactics")}>タクティクス</Button>
+          <Button variant="outlined" onClick={() => sendData("Sports")}>スポーツ</Button>
+          <Button variant="outlined" onClick={() => sendData("Racing")}>レース</Button>
+          <Button variant="outlined" onClick={() => sendData("Casual")}>カジュアル</Button>
+          <Button variant="outlined" onClick={() => sendData("Horror")}>ホラー</Button>
+          <Button variant="outlined" onClick={() => sendData("Suspense")}>サスペンス</Button>
+          <Button variant="outlined" onClick={() => sendData("Indy")}>インディー</Button>
         </Box>
       </div>
     </>

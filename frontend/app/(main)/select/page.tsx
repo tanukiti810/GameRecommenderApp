@@ -17,13 +17,6 @@ const GameSelect = () => {
       }}>
         <div className='select-header'>
           <div>select components</div>
-          <div>
-            <Button
-              variant="outlined"
-              className="small"
-              onClick={() => router.push('/sign-in')}
-            >Login</ Button>
-          </div>
         </div>
 
         <Box

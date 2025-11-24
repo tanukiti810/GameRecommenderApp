@@ -4,7 +4,7 @@ html, body {
   padding: 0;
   overflow: hidden;
 
-  background: radial-gradient(circle, #30343A, #202020);
+  background: #FBFCFF;
 }
 
 
@@ -29,13 +29,13 @@ h1 {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   font-size: 180px;
-  letter-spacing: 1vw;
-  color: #FEFBFF;
+  /* letter-spacing: 1vw; */
+  color: #2B262E;
 }
 
 .genreButton {
-  border-color: #135389;
-  color: #135389;
+  border-color: #344699;
+  color: #344699;
 }
 
 #particles-js {
