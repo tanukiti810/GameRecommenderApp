@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import * as React from 'react';
 import Box from '@mui/material/Box';
@@ -219,7 +219,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
             >
               Sign in with Facebook
             </Button>
-            
+
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
               <Link

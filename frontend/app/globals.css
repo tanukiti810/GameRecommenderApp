@@ -3,8 +3,8 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   background: #FBFCFF;
+
 }
 
 a {
@@ -12,20 +12,31 @@ a {
   text-decoration: none;
 }
 
-.flex {
-  display: flex;
-}
-
 .header {
   width: 100%;
-  height: 8.5vh;
+  height: 10vh;
   padding: 4px;
   background-color: #2B262E;
   display: flex;
   align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
-.header-outline{
+.top-margin {
+  margin-top: 10vh;
+  padding-top: 12px;
+}
+
+.Main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-outline {
   margin: 13px;
   display: flex;
   align-items: center;
@@ -41,14 +52,12 @@ a {
   position: relative;
   z-index: 1;
   display: flex;
-  height: 60vh;
-  width: 100%;
 }
 
 h1 {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
-  font-size: 180px;
+  font-size: 130px;
   color: #2B262E;
 }
 
@@ -57,34 +66,81 @@ h1 {
   color: #344699;
 }
 
-/* #particles-js {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-} */
-
-
-.choosePage {
-  width: 100%;
-  height: 100vh;
+.main-left {
+  width: 60%;
+  display: flex;
+  justify-content: center;
 }
 
-.ChooseBox {
-  width: 75%;
-  background-color: aquamarine;
+.main-right {
+  width: 40%;
+  height: 60vh;
   margin: 0 auto;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 16px;
+  align-items: center;
 }
 
+.main-right a {
+  font-size: 1.4rem;
+  color: #2B262E;
+}
+
+.main-right a:hover {
+  text-decoration-color: #344699;
+  text-decoration: underline;
+}
+
+/* Choose Page Layout */
+.choosePage {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  position: relative;
+}
+
+/* サイドバー */
 .side-bar {
-  width: 25%;
-  background-color: aqua;
+  width: 20%;
+  height: calc(100vh - 8.5vh);
+  position: fixed;
+  padding-top: 12px;
+  left: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #f5f5f5;
+  border-right: 1px solid #e0e0e0;
+  box-sizing: border-box;
+}
+
+/* ChooseBox */
+.ChooseBox {
+  width: 80%;
+  min-height: calc(100vh - 8.5vh);
+  margin-left: 25%;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+/* ListItemButton hover確認用 */
+.MuiListItemButton-root:hover {
+  background-color: rgba(52, 70, 153, 0.08);
+}
+
+/* サイドバーのスクロールバースタイル */
+.side-bar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.side-bar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.side-bar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.side-bar::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

@@ -1,6 +1,5 @@
 'use clilent'
 
-import React from 'react'
 import '../../app/globals.css'
 
 const Title = () => {

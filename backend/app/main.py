@@ -77,7 +77,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 class Choice(BaseModel):
     selected: Union[str,List[str]]
 
@@ -108,7 +107,6 @@ def choose_game(data: Choice):
         if len(result_docs)>=limit:
             break
     return result_docs
-
 
 #Reactにデータ返す
 @app.get("/")
