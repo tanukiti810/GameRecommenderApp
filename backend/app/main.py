@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import requests
 import time
 from bson import ObjectId
-from typing import Any,List,Optional
+from typing import Any,List,Optional,Union
 from pydantic import BaseModel
 from .db import games_col
 
@@ -78,12 +78,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 class Choice(BaseModel):
-    selected: str
+    selected: Union[str,List[str]]
 
 #Reactからデータ受け取り
 @app.post("/api/choose",response_model=List[GameBase])
 def choose_game(data: Choice):
-    genre = data.selected
+    if isinstance(data.selected,list):
+        genres = data.selected
+    else:
+        genres = [data.selected]
     limit = 5
     pipeline = [
         {"$sample":{"size": limit * 5}}
@@ -96,8 +99,9 @@ def choose_game(data: Choice):
         parsed_genres = parse_genres_field(d.get("genres"))
         d["genre"] = parsed_genres
 
-        if genre not in parsed_genres:
+        if not all (g in parsed_genres for g in genres):
             continue
+
         result_docs.append(GameBase(**d))
 
         if len(result_docs)>=limit:
