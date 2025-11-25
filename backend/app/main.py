@@ -9,6 +9,7 @@ from .db import games_col
 
 app = FastAPI()
 
+#コミット用
 
 #ジャンルの
 def parse_genres_field(genres_field) -> list[str]:
