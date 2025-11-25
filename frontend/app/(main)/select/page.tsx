@@ -1,9 +1,7 @@
 'use client';
 
-import React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import '../../App.css';
 import { useRouter } from 'next/navigation';
 
 const GameSelect = () => {
