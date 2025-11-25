@@ -104,6 +104,7 @@ def choose_game(data: Choice):
             break
     return result_docs
 
+
 #Reactにデータ返す
 @app.get("/")
 async def read_root():
