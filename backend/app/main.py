@@ -3,12 +3,70 @@ from fastapi.middleware.cors import CORSMiddleware
 import requests
 import time
 from bson import ObjectId
-from typing import Any
+from typing import Any,List,Optional
 from pydantic import BaseModel
 from .db import games_col
 
-
 app = FastAPI()
+
+
+#ジャンルの
+def parse_genres_field(genres_field) -> list[str]:
+
+
+    if not isinstance(genres_field, list) or not genres_field:
+        return []
+
+    first = genres_field[0]  # 今のDBだと文字列が1個だけ入っている
+    if not isinstance(first, str):
+        return []
+
+    s = first.strip()  # 空白削る
+
+    # 両端の [] を削る
+    if s.startswith("[") and s.endswith("]"):
+        s = s[1:-1]
+
+    # カンマ区切りで分ける
+    parts = s.split(",")
+
+    result: list[str] = []
+    for p in parts:
+        p = p.strip()  # 前後の空白を削る
+
+        # 先頭と末尾の ' または " を削る
+        if (p.startswith("'") and p.endswith("'")) or (p.startswith('"') and p.endswith('"')):
+            if len(p) >= 2:
+                p = p[1:-1]
+
+        if p:
+            result.append(p)
+
+    return result
+
+
+# =========================
+#  Pydantic モデル
+# =========================
+
+class GameBase(BaseModel):
+    appid: Optional[int] = None
+    name: Optional[str] = None
+    platform: Optional[str] = None
+    categories: Optional[List[str]] = None
+    genre: Optional[List[str]] = None  
+    negative: Optional[int] = None
+    positive: Optional[int] = None
+    price: Optional[float] = None
+    release_date: Optional[str] = None
+    tags: Optional[List[str]] = None
+
+    class Config:
+        orm_mode = True
+        extra = "ignore"  # _id とかモデルにないフィールドは無視
+
+
+
 
 #サンプル用の保存システム
 app.add_middleware(
@@ -18,14 +76,33 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 class Choice(BaseModel):
     selected: str
 
 #Reactからデータ受け取り
-@app.post("/api/choose")
+@app.post("/api/choose",response_model=List[GameBase])
 def choose_game(data: Choice):
-    print("受け取ったデータ:", data.selected)
-    return {"status": "ok", "received": data.selected}
+    genre = data.selected
+    limit = 5
+    pipeline = [
+        {"$sample":{"size": limit * 5}}
+    ]
+    docs = list(games_col.aggregate(pipeline))
+    result_docs: list[GameBase] = []
+    for doc in docs:
+        d = dict(doc)
+        d.pop("_id",None)
+        parsed_genres = parse_genres_field(d.get("genres"))
+        d["genre"] = parsed_genres
+
+        if genre not in parsed_genres:
+            continue
+        result_docs.append(GameBase(**d))
+
+        if len(result_docs)>=limit:
+            break
+    return result_docs
 
 #Reactにデータ返す
 @app.get("/")
