@@ -3,8 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import requests
 import time
 from bson import ObjectId
-from typing import Any
-from typing import List
+from typing import Any, List, Optional
 from pydantic import BaseModel
 from .db import games_col
 
