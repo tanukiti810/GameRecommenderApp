@@ -25,6 +25,33 @@ const ChoosePage = () => {
       <div className='choosePage flex'>
         <SidebarSelect />
         <div className='ChooseBox select_Genre'>
+          <Box
+            sx={{
+              '& button': {
+                m: 2,
+                borderColor: '#344699',
+                color: '#344699',
+                borderWidth: 3,
+                fontSize: '0.9rem',
+                padding: '20px 36px',
+              }
+            }}>
+            <Button variant="outlined" onClick={() => sendData("Action")}>アクション</Button>
+            <Button variant="outlined" onClick={() => sendData("Adventure")}>アドベンチャー</Button>
+            <Button variant="outlined" onClick={() => sendData("RPG")}>RPG</Button>
+            <Button variant="outlined" onClick={() => sendData("Shooting")}>シューティング</Button>
+            <Button variant="outlined" onClick={() => sendData("ActionAdventure")}>アクションアドベンチャー</Button>
+            <Button variant="outlined" onClick={() => sendData("Simulation")}>シミュレーション</Button>
+            <Button variant="outlined" onClick={() => sendData("SandBox")}>サンドボックス</Button>
+            <Button variant="outlined" onClick={() => sendData("Strategy")}>ストラテジー</Button>
+            <Button variant="outlined" onClick={() => sendData("Tactics")}>タクティクス</Button>
+            <Button variant="outlined" onClick={() => sendData("Sports")}>スポーツ</Button>
+            <Button variant="outlined" onClick={() => sendData("Racing")}>レース</Button>
+            <Button variant="outlined" onClick={() => sendData("Casual")}>カジュアル</Button>
+            <Button variant="outlined" onClick={() => sendData("Horror")}>ホラー</Button>
+            <Button variant="outlined" onClick={() => sendData("Suspense")}>サスペンス</Button>
+            <Button variant="outlined" onClick={() => sendData("Indy")}>インディー</Button>
+          </Box>
         </div>
       </div>
     </>
