@@ -4,7 +4,6 @@ import requests
 import time
 from bson import ObjectId
 from typing import Any
-from typing import List
 from pydantic import BaseModel
 from .db import games_col
 
@@ -19,18 +18,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+class Choice(BaseModel):
+    selected: str
 
 #Reactからデータ受け取り
-
-class Choice(BaseModel):
-    selected: List[str]
-
 @app.post("/api/choose")
 def choose_game(data: Choice):
     print("受け取ったデータ:", data.selected)
     return {"status": "ok", "received": data.selected}
-
 
 #Reactにデータ返す
 @app.get("/")
