@@ -14,7 +14,7 @@ services:
     environment:
       MONGO_URL: ${MONGO_URL}
       STEAM_API_KEY: ${STEAM_API_KEY}
-
+      RAWG_API_KEY: ${RAWG_API_KEY}
   frontend:
     build:
       context: ./frontend
