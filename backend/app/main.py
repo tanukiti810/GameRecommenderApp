@@ -79,6 +79,11 @@ app.add_middleware(
 )
 class Choice(BaseModel):
     selected: Union[str,List[str]]
+    
+@app.post("/api/choose")
+def choose_game(data: Choice):
+    print("受け取ったデータ:", data.selected)
+    return {"status": "ok", "received": data.selected}
 
 #Reactからデータ受け取り
 @app.post("/api/choose",response_model=List[GameBase])
@@ -113,6 +118,25 @@ def choose_game(data: Choice):
 async def read_root():
     return {"message": "Hello from FastAPI!, Githubに変更加えました"}
 
+@app.get("/api/games")
+def get_games():
+    return [
+        {
+            "id": 730,
+            "title": "CounterStrike 2",
+            "description": "20年以上にわたり、Couter-Strikeは世界中の何百万人ものプレイヤーに、最高の対戦エクスペリエンスを提供してきました。そして今、CSの次なるチャプターが幕を開けようとしています。それが『Counter-Strike 2』です。",
+            "image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/730/header.jpg?t=1749053861",
+            "price": 0
+        },
+        {
+            "id": 2799860,
+            "title": "イナズマイレブン 英雄たちのヴィクトリーロード",
+            "description": "収集・育成サッカーRPG「イナズマイレブン」シリーズ最新作。 新主人公が活躍する新たな物語、5,400人を超える歴代選手の収集・育成、オンラインの全国大会などが楽しめる。",
+            "image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2799860/d0e8ff66995b0cc3baf4d8a439fbfb1e57583c2c/header_japanese.jpg?t=1764296831",
+            "price": 8910
+        },
+        # ...
+    ]
 
 
 

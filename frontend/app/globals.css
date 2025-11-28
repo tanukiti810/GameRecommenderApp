@@ -144,3 +144,42 @@ h1 {
 .side-bar::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 1行5列 */
+  gap: 20px; /* カード間の余白 */
+  margin-top: 20px;
+}
+
+/* globals.css などに追加 */
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+
+  line-clamp: 2;         /* 標準プロパティ（将来対応） */
+  -webkit-line-clamp: 2; /* Webkit 対応 */
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 説明文とタイトル共通で高さを揃える */
+.card-description {
+  min-height: 40px; /* 説明文の高さ */
+  font-size: 0.85rem; /* 全体的に文字小さめ */
+  line-height: 1.2;   /* 行間を詰めて安定させる */
+  font-family: "Noto Sans JP", "Roboto", sans-serif; /* 日英で統一 */
+}
+
+.card-title {
+  min-height: 3rem; /* タイトル2行分の高さ */
+  line-height: 1.2rem; /* 1行の高さ */
+  height: calc(1.2rem * 2); /* 2行分の高さを固定 */
+  font-size: 0.9rem; /* 文字を少し小さく */
+  font-family: "Noto Sans JP", "Roboto", sans-serif;
+}
+
+.card-bottom {
+  justify-content: space-between;
+}
