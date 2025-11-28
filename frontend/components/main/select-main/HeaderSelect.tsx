@@ -8,6 +8,10 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControlLabel, FormGroup, Slider, Typography } from '@mui/material';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
+//金額、マルチプレイ 
+
+
+
 const marks = [
     {
         value: 0,
