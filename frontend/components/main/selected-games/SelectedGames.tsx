@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardActions from '@mui/material/CardActions';
 import '../../../app/globals.css';
+import NumberWithComma from "@/components/common/NumberWithComma";
 
 interface Game {
     id: number;
@@ -66,7 +67,8 @@ const SelectedGames = () => {
                         </CardActionArea>
                         <CardActions className="card-bottom">
                             <Typography>
-                                ￥　{game.price}
+                                ￥
+                                <NumberWithComma value={game.price} />
                             </Typography>
                             <Button size="small" color="primary" href={`https://store.steampowered.com/app/${game.id}`} target="_blank">
                                 link ≫
