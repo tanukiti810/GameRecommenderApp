@@ -10,72 +10,14 @@ app = FastAPI()
 #  DB → レスポンス用の形に直す関数たち
 # =========================
 
-def parse_genres_field(genres_field) -> list[str]:
-    """
-    DB の genres フィールドをちゃんとしたリストに変換する。
-
-    例:
-      genres_field = ["['Action', 'Adventure', 'RPG']"]
-      → ["Action", "Adventure", "RPG"]
-    """
-    if not isinstance(genres_field, list) or not genres_field:
-        return []
-
-    first = genres_field[0]  # 今のDBだと文字列が1個だけ入っている
-    if not isinstance(first, str):
-        return []
-
-    s = first.strip()  # 空白削る
-
-    # 両端の [] を削る
-    if s.startswith("[") and s.endswith("]"):
-        s = s[1:-1]
-
-    # カンマ区切りで分ける
-    parts = s.split(",")
-
-    result: list[str] = []
-    for p in parts:
-        p = p.strip()  # 前後の空白を削る
-
-        # 先頭と末尾の ' または " を削る
-        if (p.startswith("'") and p.endswith("'")) or (p.startswith('"') and p.endswith('"')):
-            if len(p) >= 2:
-                p = p[1:-1]
-
-        if p:
-            result.append(p)
-
-    return result
-
-
-# =========================
-#  Pydantic モデル
-# =========================
-
-class GameBase(BaseModel):
-    appid: Optional[int] = None
-    name: Optional[str] = None
-    platform: Optional[str] = None
-    categories: Optional[List[str]] = None
-    genre: Optional[List[str]] = None  # ← ここに変換後のジャンルを入れて返す
-    negative: Optional[int] = None
-    positive: Optional[int] = None
-    price: Optional[float] = None
-    release_date: Optional[str] = None
-    tags: Optional[List[str]] = None
-
-    class Config:
-        orm_mode = True
-        extra = "ignore"  # _id とかモデルにないフィールドは無視
 
 
 # =========================
 #  ① 全ジャンル一覧 + ジャンル数
 # =========================
 
-@app.get("/genres")
-def get_genres():
+@app.get("/categories")
+def get_categories():
     """
     DB に入ってる genres から、全部のジャンルを集めて
     ・ジャンルの種類数
@@ -85,7 +27,7 @@ def get_genres():
 
     # genres フィールドの「中の要素」を distinct で全部取る
     # 今のDBだと "['Action', 'Adventure', 'RPG']" みたいな文字がたくさん返ってくるイメージ
-    raw_values = games_col.distinct("genres")
+    raw_values = games_col.distinct("categories")
 
     genre_set: set[str] = set()
 
@@ -104,8 +46,8 @@ def get_genres():
     genres_sorted = sorted(genre_set)
 
     return {
-        "genre_count": len(genres_sorted),
-        "genres": genres_sorted,
+        "categories_count": len(genres_sorted),
+        "categories": genres_sorted,
     }
 
 
