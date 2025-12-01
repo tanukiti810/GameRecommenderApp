@@ -30,23 +30,24 @@ const items: ParentItem[] = [
     label: "アクション",
     children: [
       { id: "FPS", label: "FPS" },
-      { id: "ActionGame", label: "アクションゲーム" },
-      { id: "Fighting", label: "格闘ゲーム" },
+      { id: "PvP", label: "PvP" },
+      { id: "PvE", label: "PvE" },
     ],
   },
   {
     id: "Adventure",
     label: "アドベンチャー",
     children: [
-      { id: "Novel", label: "ノベル" },
-      { id: "Exploration", label: "探索ゲーム" },
+      { id: "RPG", label: "RPG" },
+      { id: "MMO", label: "MMORPG" },
+      { id: "Single-player", label: "シングルプレイヤー" },
+      { id: "Multi-player", label: "マルチプレイヤー" },
     ],
   },
   {
     id: "RPG",
     label: "RPG",
     children: [
-      { id: "JRPG", label: "JRPG" },
       { id: "ARPG", label: "アクションRPG" },
       { id: "MMORPG", label: "MMORPG" },
     ],
