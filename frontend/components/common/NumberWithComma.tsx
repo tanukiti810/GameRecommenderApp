@@ -1,8 +1,8 @@
 import React from "react";
 
 type NumberWithCommaProps = {
-    value: number | string;
-    locale?: string;
+    value: number | string; // 数値または数値文字列
+    locale?: string;        // ロケール（例: "ja-JP", "en-US"）
 };
 
 const NumberWithComma: React.FC<NumberWithCommaProps> = ({

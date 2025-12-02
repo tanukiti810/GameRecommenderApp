@@ -40,7 +40,7 @@ const SelectedGames = () => {
 
             <div className="grid-container">
                 {games.map((game) => (
-                    <Card key={game.id} sx={{ maxWidth: 250, p: "2px", mb: "10px"}}>
+                    <Card key={game.id} sx={{ maxWidth: 250 }}>
                         <CardActionArea component="a" target="blank" href={`https://store.steampowered.com/app/${game.id}`}>
                             <CardMedia
                                 component="img"

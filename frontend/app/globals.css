@@ -147,8 +147,8 @@ h1 {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr); /* 1行5列 */
+  gap: 20px; /* カード間の余白 */
   margin-top: 20px;
 }
 
