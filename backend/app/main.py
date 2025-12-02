@@ -133,10 +133,9 @@ def get_games():
             "id": 2799860,
             "title": "イナズマイレブン 英雄たちのヴィクトリーロード",
             "description": "収集・育成サッカーRPG「イナズマイレブン」シリーズ最新作。 新主人公が活躍する新たな物語、5,400人を超える歴代選手の収集・育成、オンラインの全国大会などが楽しめる。",
-            "image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2799860/d0e8ff66995b0cc3baf4d8a439fbfb1e57583c2c/header_japanese.jpg?t=1764296831",
-            "price": 8910
+            "image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2799860/header_japanese.jpg",
+            "price": 8910 
         },
-            
     ]
 
 
