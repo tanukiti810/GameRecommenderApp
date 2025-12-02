@@ -136,7 +136,7 @@ def get_games():
             "image": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2799860/d0e8ff66995b0cc3baf4d8a439fbfb1e57583c2c/header_japanese.jpg?t=1764296831",
             "price": 8910
         },
-        # ...
+            
     ]
 
 
@@ -202,6 +202,8 @@ async def debug_games(limit: int = 100):
     cursor = games_col.find({}).limit(limit)
     docs = [_convert_id(doc) for doc in cursor]
     return {"total": total,"sample_limit" : limit, "games": docs}
+
+
 
 
 # uvicornで起動したときはここは動かない
