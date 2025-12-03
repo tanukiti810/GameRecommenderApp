@@ -2,6 +2,7 @@
 
 import { Button } from '@mui/material'
 import { useRouter } from 'next/navigation'
+import '../../app/globals.css'
 import Title from './Title'
 
 const Header = () => {

@@ -1,4 +1,4 @@
-'use client'
+'use clilent'
 
 import '../../app/globals.css'
 
