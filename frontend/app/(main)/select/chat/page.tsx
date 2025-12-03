@@ -1,14 +1,13 @@
-'use client'
+'use client';
 
-import { Button } from '@mui/material'
+import { Button, TextField } from '@mui/material';
 
 export default function ChatPage() {
   return (
     <div>
-      ChatAI
-      <br />
-      <input type="text" />
-      <Button variant="outlined">send</Button>
+      <h1>ChatAI</h1>
+      <TextField type="text" placeholder="Type your message..." />
+      <Button variant="outlined">Send</Button>
     </div>
-  )
+  );
 }
