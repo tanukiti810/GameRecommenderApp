@@ -1,10 +1,9 @@
 html,
 body {
-  height: 100%;
+  height: 80%;
   margin: 0;
   padding: 0;
   background: #FBFCFF;
-
 }
 
 a {
@@ -147,8 +146,10 @@ h1 {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 1行5列 */
-  gap: 20px; /* カード間の余白 */
+  grid-template-columns: repeat(4, 1fr);
+  /* 1行5列 */
+  gap: 20px;
+  /* カード間の余白 */
   margin-top: 20px;
 }
 
@@ -157,8 +158,10 @@ h1 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
 
-  line-clamp: 2;         /* 標準プロパティ（将来対応） */
-  -webkit-line-clamp: 2; /* Webkit 対応 */
+  line-clamp: 2;
+  /* 標準プロパティ（将来対応） */
+  -webkit-line-clamp: 2;
+  /* Webkit 対応 */
 
   overflow: hidden;
   text-overflow: ellipsis;
@@ -166,20 +169,220 @@ h1 {
 
 /* 説明文とタイトル共通で高さを揃える */
 .card-description {
-  min-height: 40px; /* 説明文の高さ */
-  font-size: 0.85rem; /* 全体的に文字小さめ */
-  line-height: 1.2;   /* 行間を詰めて安定させる */
-  font-family: "Noto Sans JP", "Roboto", sans-serif; /* 日英で統一 */
+  min-height: 40px;
+  /* 説明文の高さ */
+  font-size: 0.85rem;
+  /* 全体的に文字小さめ */
+  line-height: 1.2;
+  /* 行間を詰めて安定させる */
+  font-family: "Noto Sans JP", "Roboto", sans-serif;
+  /* 日英で統一 */
 }
 
 .card-title {
-  min-height: 3rem; /* タイトル2行分の高さ */
-  line-height: 1.2rem; /* 1行の高さ */
-  height: calc(1.2rem * 2); /* 2行分の高さを固定 */
-  font-size: 0.9rem; /* 文字を少し小さく */
+  min-height: 3rem;
+  /* タイトル2行分の高さ */
+  line-height: 1.2rem;
+  /* 1行の高さ */
+  height: calc(1.2rem * 2);
+  /* 2行分の高さを固定 */
+  font-size: 0.9rem;
+  /* 文字を少し小さく */
   font-family: "Noto Sans JP", "Roboto", sans-serif;
 }
 
 .card-bottom {
   justify-content: space-between;
+}
+
+
+/* 背景グラデーションアニメーション */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 背景設定 - 修正版 */
+.background {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 10vh;
+  left: 0;
+  overflow: hidden;
+  background: linear-gradient(135deg,
+      #667eea 0%,
+      #764ba2 25%,
+      #f093fb 50%,
+      #f5576c 75%,
+      #4facfe 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* リキッドグラスコンテナ */
+.liquid-glass-container {
+  perspective: 1000px;
+}
+
+/* メインのリキッドグラスカード */
+.liquid-glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ホバーエフェクト */
+.liquid-glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* タイトルスタイル */
+.liquid-glass-card h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  background: linear-gradient(45deg, #fff, #f0f0f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* テキストスタイル */
+.liquid-glass-card p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+/* リキッドグラスボタン */
+.liquid-glass-button {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 12px 24px;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border: none;
+  outline: none;
+}
+
+/* input専用スタイル */
+.liquid-glass-button[type="text"] {
+  text-align: left;
+  flex: 1;
+}
+
+.liquid-glass-button::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.liquid-glass-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent);
+  transition: left 0.5s ease;
+}
+
+.liquid-glass-button:hover::before {
+  left: 100%;
+}
+
+.liquid-glass-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.liquid-glass-button:active {
+  transform: translateY(0);
+}
+
+/* button要素専用のスタイル */
+button.liquid-glass-button {
+  width: auto;
+  min-width: 60px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .liquid-glass-card {
+    padding: 24px;
+    margin: 20px;
+    max-width: calc(100vw - 40px);
+  }
+
+  .liquid-glass-card h1 {
+    font-size: 1.5rem;
+  }
+
+  .liquid-glass-card p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Safari対応の追加設定 */
+@supports (-webkit-backdrop-filter: blur(20px)) {
+  .liquid-glass-card {
+    backdrop-filter: blur(20px) saturate(1.8);
+  }
 }

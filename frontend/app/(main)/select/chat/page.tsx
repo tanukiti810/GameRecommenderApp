@@ -1,15 +1,10 @@
-'use client'
-
-'use client';
-
-import { Button, TextField } from '@mui/material';
+"use client"
+import LiquidGlass from "@/components/main/chat-main/LiquidGlass";
 
 export default function ChatPage() {
   return (
-    <div>
-      <h1>ChatAI</h1>
-      <TextField type="text" placeholder="Type your message..." />
-      <Button variant="outlined">Send</Button>
+    <div className="chat-page-wrapper">
+      <LiquidGlass />
     </div>
   );
 }
