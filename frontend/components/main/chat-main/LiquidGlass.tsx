@@ -15,7 +15,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
     };
 
     return (
-        <div className="chat-input">
             <div className="liquid-glass-card">
                 <input
                     className='liquid-glass-button'
@@ -27,7 +26,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
                 />
                 <button className="liquid-glass-button" onClick={handleSend}><SendIcon /></button>
             </div>
-        </div>
     );
 };
 

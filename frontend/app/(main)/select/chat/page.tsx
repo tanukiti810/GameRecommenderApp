@@ -1,12 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChatWindow from "../../../../components/main/chat-main/ChatWindow";
 import LiquidGlass from "../../../../components/main/chat-main/LiquidGlass";
 
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<{ id: string; text: string; sender: "user" | "ai" }[]>([]);
-
 
   const handleSend = (text: string) => {
     const userMsg = { id: Date.now().toString(), text, sender: "user" as const };
@@ -21,9 +20,10 @@ export default function ChatPage() {
   };
 
 
+
   return (
-    <div className="chat-page-wrapper">
-      <div className="background">
+    <div className="background">
+      <div className="chatPage">
         <ChatWindow messages={messages} />
         <LiquidGlass onSend={handleSend} />
       </div>
