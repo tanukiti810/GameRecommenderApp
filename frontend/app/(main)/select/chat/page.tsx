@@ -1,17 +1,22 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import ChatWindow from "../../../../components/main/chat-main/ChatWindow";
-import LiquidGlass from "../../../../components/main/chat-main/LiquidGlass";
+import ChatInput from "../../../../components/main/chat-main/ChatInput";
 
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<{ id: string; text: string; sender: "user" | "ai" }[]>([]);
 
   const handleSend = (text: string) => {
-    const userMsg = { id: Date.now().toString(), text, sender: "user" as const };
+    const userMsg = {
+      id: crypto.randomUUID(),
+      text,
+      sender: "user" as const
+    };
     setMessages(prev => [...prev, userMsg]);
+    //ここでAIの返答を設定
     const aiMsg = {
-      id: (Date.now() + 1).toString(),
+      id: crypto.randomUUID(),
       text: "AIの返信です",
       sender: "ai" as const
     };
@@ -25,7 +30,7 @@ export default function ChatPage() {
     <div className="background">
       <div className="chatPage">
         <ChatWindow messages={messages} />
-        <LiquidGlass onSend={handleSend} />
+        <ChatInput onSend={handleSend} />
       </div>
     </div>
   );

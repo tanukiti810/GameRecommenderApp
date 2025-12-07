@@ -20,6 +20,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages }) => {
     return (
         <div className="chat-window">
             <div className='chatElement'>
+                {/* 配列messagesを順番に表示 */}
                 {messages.map(msg => (
                     <MessageItem key={msg.id} text={msg.text} sender={msg.sender} />
                 ))}
