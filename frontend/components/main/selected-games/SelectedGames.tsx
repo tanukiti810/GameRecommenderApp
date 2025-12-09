@@ -20,7 +20,7 @@ interface Game {
 }
 
 const SelectedGames = () => {
-    const [games, setGames] = useState<Game[]>([]);
+    const [games, setGames] = useState<any[]>([]);
 
     useEffect(() => {
         const fetchGames = async () => {
@@ -28,7 +28,7 @@ const SelectedGames = () => {
             const data = await res.json();
 
             // data は [{id, title, description, image}, ...] を想定
-            setGames(data);
+            setGames(data.games ?? []);
         };
 
         fetchGames();

@@ -13,6 +13,10 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import Box from "@mui/material/Box";
 import { Divider } from "@mui/material";
 
+type SidebarSelectProps = {
+  onResults: (games: any[]) => void;
+};
+
 interface SubItem {
   id: string;
   label: string;
@@ -197,27 +201,61 @@ const items: ParentItem[] = [
 
 
 
-const SidebarSelect = () => {
+const SidebarSelect: React.FC<SidebarSelectProps> = ({ onResults }) => {
   const [checked, setChecked] = React.useState<string[]>([]);
   const [open, setOpen] = React.useState<{ [key: string]: boolean }>({});
   const debounceRef = React.useRef<NodeJS.Timeout | null>(null);
+  const SUPPORTED_GENRE_PARENTS = new Set([
+  "Action",
+  "Adventure",
+  "RPG",
+  "Simulation",
+  "Strategy",
+  "Sports",
+  "Casual",
+]);
 
-  const sendDataDebounced = (selected: string[]) => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(async () => {
-      try {
-        const response = await fetch("http://localhost:8000/api/choose", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ selected }),
-        });
-        const result = await response.json();
-        console.log("サーバーからの返却:", result);
-      } catch (err) {
-        console.error("送信エラー:", err);
-      }
-    }, 300);
-  };
+const childToParentGenre = React.useMemo(() => {
+  const map: Record<string, string> = {};
+  items.forEach((p) => {
+    p.children.forEach((c) => {
+      map[c.id] = p.id; 
+    });
+  });
+  return map;
+}, []);
+
+const buildSelectedGenres = (checkedIds: string[]) => {
+  const parents = checkedIds
+    .map((id) => childToParentGenre[id])
+    .filter((pid): pid is string => !!pid && SUPPORTED_GENRE_PARENTS.has(pid));
+
+  return Array.from(new Set(parents)); 
+};
+
+
+const sendDataDebounced = (selected: string[]) => {
+  if (debounceRef.current) clearTimeout(debounceRef.current);
+
+  debounceRef.current = setTimeout(async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/choose", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ selected }),
+      });
+
+      const result = await response.json();
+
+      const list = Array.isArray(result) ? result : (result?.games ?? []);
+      onResults(list);
+
+    } catch (err) {
+      console.error("送信エラー:", err);
+      onResults([]); 
+    }
+  }, 300);
+};
 
   const handleToggle = (value: string) => (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -228,7 +266,8 @@ const SidebarSelect = () => {
     else newChecked.splice(currentIndex, 1);
 
     setChecked(newChecked);
-    sendDataDebounced(newChecked);
+    sendDataDebounced(buildSelectedGenres(newChecked));
+
   };
 
   const handleParentToggle = (parent: ParentItem) => (e: React.MouseEvent) => {
@@ -249,7 +288,7 @@ const SidebarSelect = () => {
     }
 
     setChecked(newChecked);
-    sendDataDebounced(newChecked);
+    sendDataDebounced(buildSelectedGenres(newChecked));
   };
 
   const handleOpen = (key: string) => (e: React.MouseEvent) => {
