@@ -10,7 +10,7 @@ type RawGame = {
   price?: number | string;
   image?: string | null;
   description?: string | null;
-  short_description?: string | null; 
+  short_description?: string | null;
 };
 
 type DisplayGame = {
@@ -49,10 +49,26 @@ export default function ChoosePage() {
   }, [games]);
 
   return (
-    <div style={{ display: "flex", gap: 16 }}>
-      <SidebarSelect onResults={setGames} />
+    <div
+      style={{
+        display: "flex",
+        gap: 16,
+        height: "100vh",
+      }}
+    >
 
-      <div style={{ flex: 1 }}>
+      <div style={{ 
+        flexShrink: 0 }}>
+        <SidebarSelect onResults={setGames} />
+      </div>
+
+      <div
+        style={{
+          flex: 1,
+          height: "100vh",
+          overflowY: "auto",
+        }}
+      >
         <SelectedGames games={uniqueDisplayGames} />
       </div>
     </div>
