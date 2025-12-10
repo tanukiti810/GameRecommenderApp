@@ -31,6 +31,7 @@ a {
 } */
 
 .Main {
+  margin-top: 18vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -355,8 +356,8 @@ h1 {
 
 .liquid-glass-card-side {
   width: 20%;
-  height: calc(100vh - 8vh);
-  margin-top: 8vh;
+  height: calc(100vh - 18vh);
+  margin-top: 18vh;
   position: sticky;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px) saturate(1.8);
