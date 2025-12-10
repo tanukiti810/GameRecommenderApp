@@ -1,48 +1,11 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import SidebarSelect from "@/components/main/select-main/SidebarSelect";
 import SelectedGames from "@/components/main/selected-games/SelectedGames";
 
-type RawGame = {
-  appid?: number;
-  name?: string;
-  price?: number | string;
-  image?: string | null;
-  description?: string | null;
-};
-
-type DisplayGame = {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-  description: string;
-};
-
 export default function ChoosePage() {
-  const [games, setGames] = useState<RawGame[]>([]);
-  const uniqueDisplayGames = useMemo<DisplayGame[]>(() => {
-    const displayGames = games
-      .map((g) => {
-        const id = g.appid;
-        if (!id) return null;
-
-        return {
-          id,
-          title: g.name ?? "",
-          price: Number(g.price ?? 0),
-          image:
-            g.image ??
-            `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${id}/header.jpg`,
-          description: g.description ?? "",
-        } as DisplayGame;
-      })
-      .filter(Boolean) as DisplayGame[];
-
-
-    return Array.from(new Map(displayGames.map((g) => [g.id, g])).values());
-  }, [games]);
+  const [games, setGames] = useState<any[]>([]);
 
   return (
     <div style={{ display: "flex", gap: 16 }}>
@@ -51,7 +14,15 @@ export default function ChoosePage() {
 
       {/* 右の一覧 */}
       <div style={{ flex: 1 }}>
-        <SelectedGames games={uniqueDisplayGames} />
+        <div style={{ padding: 8 }}>
+          <div>受け取った games の型: {Array.isArray(games) ? "array" : typeof games}</div>
+          <div>games.length: {Array.isArray(games) ? games.length : "N/A"}</div>
+          <pre style={{ whiteSpace: "pre-wrap", fontSize: 12 }}>
+            {JSON.stringify(games?.slice?.(0, 2) ?? games, null, 2)}
+          </pre>
+        </div>
+
+        <SelectedGames games={games} />
       </div>
     </div>
   );
