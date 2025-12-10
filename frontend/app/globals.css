@@ -1,9 +1,9 @@
 html,
 body {
-  height: 80%;
+  height: 100%;
   margin: 0;
   padding: 0;
-  background: #FBFCFF;
+  color: #FBFCFF;
 }
 
 a {
@@ -11,9 +11,10 @@ a {
   text-decoration: none;
 }
 
-.header {
+/* .header {
   width: 100%;
   height: 10vh;
+  min-height: 64px;
   padding: 4px;
   background-color: #2B262E;
   display: flex;
@@ -22,12 +23,12 @@ a {
   top: 0;
   left: 0;
   z-index: 1;
-}
+} */
 
-.top-margin {
+/* .top-margin {
   margin-top: 10vh;
   padding-top: 12px;
-}
+} */
 
 .Main {
   display: flex;
@@ -92,32 +93,18 @@ h1 {
 
 /* Choose Page Layout */
 .choosePage {
-  width: 100%;
-  min-height: 100vh;
   display: flex;
-  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 10vh);
+  margin-top: 10vh;
 }
 
-/* サイドバー */
-.side-bar {
-  width: 20%;
-  height: calc(100vh - 8.5vh);
-  position: fixed;
-  padding-top: 12px;
-  padding-bottom: 40px;
-  left: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background-color: #f5f5f5;
-  border-right: 1px solid #e0e0e0;
-  box-sizing: border-box;
-}
 
 /* ChooseBox */
 .ChooseBox {
   width: 80%;
-  min-height: calc(100vh - 8.5vh);
-  margin-left: 25%;
+  min-height: calc(100vh - 10vh);
+  margin-top: 10vh;
   padding: 12px;
   box-sizing: border-box;
 }
@@ -128,20 +115,21 @@ h1 {
 }
 
 /* サイドバーのスクロールバースタイル */
-.side-bar::-webkit-scrollbar {
+.liquid-glass-card-side::-webkit-scrollbar {
   width: 8px;
 }
 
-.side-bar::-webkit-scrollbar-track {
+.liquid-glass-card-side::-webkit-scrollbar-track {
   background: #f1f1f1;
+  border-radius: 4px;
 }
 
-.side-bar::-webkit-scrollbar-thumb {
+.liquid-glass-card-side::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
 }
 
-.side-bar::-webkit-scrollbar-thumb:hover {
+.liquid-glass-card-side::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
@@ -217,7 +205,6 @@ h1 {
   width: 100vw;
   height: 100vh;
   position: fixed;
-  top: 10vh;
   left: 0;
   overflow: hidden;
   background: linear-gradient(135deg,
@@ -250,7 +237,7 @@ h1 {
   max-width: 800px;
   width: 100%;
   text-align: center;
-  color: white;
+  color: whitez;
   position: relative;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -295,6 +282,176 @@ h1 {
 
 /* テキストスタイル */
 .liquid-glass-card p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.liquid-glass-card-header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 8px;
+  width: 95%;
+  text-align: center;
+  color: whitez;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  margin: 0 auto;
+  margin-top: 4px;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 10vh;
+  min-height: 64px;
+  top: 0;
+  z-index: 1;
+}
+
+/* ホバーエフェクト */
+.liquid-glass-card-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* タイトルスタイル */
+.liquid-glass-card-header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  background: linear-gradient(45deg, #fff, #f0f0f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* テキストスタイル */
+.liquid-glass-card-header p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.liquid-glass-card-side {
+  width: 20%;
+  height: calc(100vh - 8vh);
+  margin-top: 8vh;
+  position: sticky;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 12px 10px 40px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* ホバーエフェクト */
+.liquid-glass-card-side::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* タイトルスタイル */
+.liquid-glass-card-side h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  background: linear-gradient(45deg, #fff, #f0f0f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* テキストスタイル */
+.liquid-glass-card-side p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.liquid-glass-card-game {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  padding: 12px;
+  width: 100%;
+  max-width: 250px;
+  text-align: center;
+  color: white;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* ホバーエフェクト */
+.liquid-glass-card-game::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* タイトルスタイル */
+.iquid-glass-card-game h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  background: linear-gradient(45deg, #fff, #f0f0f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* テキストスタイル */
+.liquid-glass-card-game p {
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 24px;
@@ -396,6 +553,7 @@ button.liquid-glass-button {
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
+  margin-top: 10vh;
   display: flex;
   justify-content: center;
   flex: 1;
@@ -441,7 +599,7 @@ button.liquid-glass-button {
   width: 80%;
   height: calc(100vh - 10vh);
   margin: 0 auto;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
