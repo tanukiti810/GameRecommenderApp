@@ -268,7 +268,7 @@ const SidebarSelect = () => {
   };
 
   return (
-    <Box className="side-bar">
+    <Box className="liquid-glass-card-side">
       <List sx={{ width: "100%", padding: 0 }}>
         <ListItem>
           <ListItemText primary="プラットフォーム" />

@@ -6,8 +6,8 @@ import Title from './Title'
 
 const Header = () => {
     const router = useRouter();
-    return (
-        <div className='header'>
+    return (    
+        <div className='liquid-glass-card-header'>
             <div className='header-outline'>
                 <Title />
                 <div>

@@ -13,7 +13,7 @@ const HeaderSelect = () => {
         setHeadData(event.target.value);
     };
     return (
-        <div className='header'>
+        <div className='liquid-glass-card-header'>
             <div className='header-outline  flex'>
                 <Title />
                 <div>
