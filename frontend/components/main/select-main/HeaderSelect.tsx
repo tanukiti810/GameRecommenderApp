@@ -17,7 +17,7 @@ const HeaderSelect = () => {
             <div className='header-outline  flex'>
                 <Title />
                 <div>
-                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                    {/* <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                         <InputLabel id="demo-select-small-label">Age</InputLabel>
                         <Select
                             labelId="demo-select-small-label"
@@ -33,7 +33,7 @@ const HeaderSelect = () => {
                             <MenuItem value={20}>Twenty</MenuItem>
                             <MenuItem value={30}>Thirty</MenuItem>
                         </Select>
-                    </FormControl>
+                    </FormControl> */}
                 </div>
             </div>
         </div>

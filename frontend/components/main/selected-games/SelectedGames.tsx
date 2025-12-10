@@ -40,8 +40,8 @@ const SelectedGames = () => {
 
             <div className="grid-container">
                 {games.map((game) => (
-                    <div className="liquid-glass-card-game">
-                        <Card key={game.id} sx={{
+                    <div key={game.id} className="liquid-glass-card-game">
+                        <Card sx={{
                             maxWidth: 250,
                             maxHeight: 350,
                             background: "rgba(255, 255, 255, 0.1)",

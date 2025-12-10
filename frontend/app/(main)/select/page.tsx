@@ -9,8 +9,12 @@ const GameSelect = () => {
   return (
     <>
       <div style={{
-        height: '100vh', 
-        boxSizing: 'border-box'
+        height: '100vh',
+        boxSizing: 'border-box',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
       }}>
         <div className='select-header'>
           <div>select components</div>
