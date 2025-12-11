@@ -10,7 +10,7 @@ type RawGame = {
   price?: number | string;
   image?: string | null;
   description?: string | null;
-  short_description?: string | null; 
+  short_description?: string | null;
 };
 
 type DisplayGame = {
@@ -50,8 +50,10 @@ export default function ChoosePage() {
 
   return (
     <div style={{ display: "flex", gap: 16 }}>
+      {/* 左フィルタ */}
       <SidebarSelect onResults={setGames} />
 
+      {/* 右の一覧 */}
       <div style={{ flex: 1 }}>
         <SelectedGames games={uniqueDisplayGames} />
       </div>

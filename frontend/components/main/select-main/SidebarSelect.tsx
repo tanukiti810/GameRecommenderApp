@@ -16,7 +16,21 @@ import { Divider } from "@mui/material";
 type SidebarSelectProps = {
   onResults: (games: any[]) => void;
 };
+type ChoosePayload = {
+  genres: string[];
+  tags: string[];
+  mode: "and" | "or";
+};
 
+const SUPPORTED_GENRE_PARENTS = new Set([
+  "Action",
+  "Adventure",
+  "RPG",
+  "Simulation",
+  "Strategy",
+  "Sports",
+  "Casual",
+]);
 interface SubItem {
   id: string;
   label: string;
@@ -200,7 +214,6 @@ const items: ParentItem[] = [
 ];
 
 
-
 const SidebarSelect: React.FC<SidebarSelectProps> = ({ onResults }) => {
   const [checked, setChecked] = React.useState<string[]>([]);
   const [open, setOpen] = React.useState<{ [key: string]: boolean }>({});
@@ -215,26 +228,38 @@ const SidebarSelect: React.FC<SidebarSelectProps> = ({ onResults }) => {
   "Casual",
 ]);
 
-const childToParentGenre = React.useMemo(() => {
-  const map: Record<string, string> = {};
-  items.forEach((p) => {
-    p.children.forEach((c) => {
-      map[c.id] = p.id; 
-    });
+const childToParentGenre: Record<string, string> = {};
+items.forEach((parent) => {
+  parent.children.forEach((child) => {
+    childToParentGenre[child.id] = parent.id;
   });
-  return map;
-}, []);
+});
 
-const buildSelectedGenres = (checkedIds: string[]) => {
-  const parents = checkedIds
-    .map((id) => childToParentGenre[id])
-    .filter((pid): pid is string => !!pid && SUPPORTED_GENRE_PARENTS.has(pid));
 
-  return Array.from(new Set(parents)); 
+const buildPayloadFromChecked = (checkedIds: string[]): ChoosePayload => {
+  const genresSet = new Set<string>();
+  const tagsSet = new Set<string>();
+
+  for (const id of checkedIds) {
+    const parentId = childToParentGenre[id];
+
+    // 親が Action / RPG などならジャンルとして追加
+    if (parentId && SUPPORTED_GENRE_PARENTS.has(parentId)) {
+      genresSet.add(parentId);
+    }
+    // 子の ID はそのままタグとして追加
+    tagsSet.add(id);
+  }
+
+  return {
+    genres: Array.from(genresSet),
+    tags: Array.from(tagsSet),
+    mode: "and", // ひとまず全部 AND 検索。将来トグル入れるならここ変える
+  };
 };
 
 
-const sendDataDebounced = (selected: string[]) => {
+const sendDataDebounced = (payload: ChoosePayload) => {
   if (debounceRef.current) clearTimeout(debounceRef.current);
 
   debounceRef.current = setTimeout(async () => {
@@ -242,21 +267,18 @@ const sendDataDebounced = (selected: string[]) => {
       const response = await fetch("http://localhost:8000/api/choose", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ selected }),
+        body: JSON.stringify(payload),
       });
 
       const result = await response.json();
-
-      const list = Array.isArray(result) ? result : (result?.games ?? []);
+      const list = Array.isArray(result) ? result : result?.games ?? [];
       onResults(list);
-
     } catch (err) {
       console.error("送信エラー:", err);
-      onResults([]); 
+      onResults([]);
     }
   }, 300);
 };
-
   const handleToggle = (value: string) => (e: React.MouseEvent) => {
     e.stopPropagation();
     const currentIndex = checked.indexOf(value);
@@ -266,8 +288,8 @@ const sendDataDebounced = (selected: string[]) => {
     else newChecked.splice(currentIndex, 1);
 
     setChecked(newChecked);
-    sendDataDebounced(buildSelectedGenres(newChecked));
-
+    const payload = buildPayloadFromChecked(newChecked);
+    sendDataDebounced(payload);
   };
 
   const handleParentToggle = (parent: ParentItem) => (e: React.MouseEvent) => {
@@ -288,7 +310,9 @@ const sendDataDebounced = (selected: string[]) => {
     }
 
     setChecked(newChecked);
-    sendDataDebounced(buildSelectedGenres(newChecked));
+    const payload = buildPayloadFromChecked(newChecked);
+    sendDataDebounced(payload);
+
   };
 
   const handleOpen = (key: string) => (e: React.MouseEvent) => {

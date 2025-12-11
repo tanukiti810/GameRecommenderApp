@@ -4,11 +4,50 @@ import requests
 import time
 import ast
 from bson import ObjectId
-from typing import Any,Union,List
+from typing import Any,Union,List,Literal,Dict
 from pydantic import BaseModel
 from .db import games_col
+import os 
 
 app = FastAPI()
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
+
+# Sidebar のタグID -> Steamの tags_list の文字列
+TAG_ALIAS: dict[str, str] = {
+    # ---- アクション系 ----
+    "FPS": "FPS",
+    "ThirdPersonShooter": "Third-Person Shooter",
+    "HackAndSlash": "Hack and Slash",
+    "Platformer": "Platformer",
+    "BulletHell": "Bullet Hell",
+    "Metroidvania": "Metroidvania",
+    "SoulsLike": "Souls-like",
+    "RogueLite": "Rogue-lite",
+    "Roguelike": "Rogue-like",
+
+    # ---- アドベンチャー系 ----
+    "Exploration": "Exploration",
+    "WalkingSimulator": "Walking Simulator",
+    "VisualNovel": "Visual Novel",
+    "ChoicesMatter": "Choices Matter",
+    "Mystery": "Mystery",
+    "Horror": "Horror",
+    "SurvivalHorror": "Survival Horror",
+
+    # 必要になったらここに増やしていけばOK
+}
+
+
+ALLOWED_GENRES = {
+    "Action",
+    "Adventure",
+    "RPG",
+    "Simulation",
+    "Strategy",
+    "Sports",
+    "Casual",
+}
 
 #サンプル用の保存システム
 app.add_middleware(
@@ -20,33 +59,86 @@ app.add_middleware(
 )
 
 class Choice(BaseModel):
-    selected: List[str] = []
+    genres: List[str] = []
+    tags: List[str]= []
+    limit: int = 200
     
+class ChatHistoryItem(BaseModel):
+    # "user" か "assistant" か
+    role: Literal["user", "assistant"]
+    content: str
+
+
+class ChatRequest(BaseModel):
+    # 今回送るメッセージ本体
+    message: str
+    # それまでの会話履歴
+    history: list[ChatHistoryItem] = []
+
+
+class ChatResponse(BaseModel):
+    # AI の返答文
+    reply: str
 
 
 @app.post("/api/choose")
 def choose_game(data: Choice):
-    genres = [g for g in data.selected if g in ALLOWED_GENRES]
+    # 1) リクエストを整形
+    genres = data.genres or []
+    raw_tags = data.tags or []
+    limit = data.limit
 
-    cursor = games_col.find({}).limit(200)
+    # フロントのタグID -> Steamタグ文字列
+    normalized_tags = [TAG_ALIAS.get(t, t) for t in raw_tags]
 
-    results = []
+    print("受け取った genres:", genres)
+    print("受け取った tags:", raw_tags, " => ", normalized_tags)
+
+    # 2) MongoDB のクエリを組み立て
+    query: Dict[str, Any] = {
+        "platform": "steam",
+    }
+
+    # 親ジャンルは OR 条件（どれか1つ含んでいればOK）
+    if genres:
+        query["genres_list"] = {"$in": genres}
+
+    # タグは AND 条件（全部含んでるゲームだけ）
+    if normalized_tags:
+        query["tags_list"] = {"$all": normalized_tags}
+
+    # 3) 実際に検索
+    cursor = games_col.find(query).limit(limit)
+
+    games: list[dict[str, Any]] = []
     for doc in cursor:
-        doc_genres = parse_genres_field(doc.get("genres"))
-        if genres and not all(g in doc_genres for g in genres):
+        appid = doc.get("appid")
+        if not appid:
             continue
 
-        appid = doc.get("appid")
-        name = doc.get("name")
+        name = doc.get("name", "")
+        price = float(doc.get("price") or 0)
+        description = (
+            doc.get("short_description")
+            or doc.get("description")
+            or ""
+        )
+        image = (
+            f"https://shared.akamai.steamstatic.com/store_item_assets/"
+            f"steam/apps/{appid}/header.jpg"
+        )
 
-        results.append({
-            "appid": appid,
-            "name": name,
-            "price": doc.get("price", 0),
-            "image": f"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/{appid}/header.jpg" if appid else None
-        })
+        games.append(
+            {
+                "id": appid,
+                "title": name,
+                "price": price,
+                "image": image,
+                "description": description,
+            }
+        )
 
-    return {"count": len(results), "games": results}
+    return {"count": len(games), "games": games}
 
 #Reactにデータ返す
 @app.get("/")
@@ -142,7 +234,44 @@ async def debug_games(limit: int = 100):
     docs = [_convert_id(doc) for doc in cursor]
     return {"total": total,"sample_limit" : limit, "games": docs}
 
+@app.post("/api/chat", response_model=ChatResponse)
+async def chat_with_ai(body: ChatRequest):
+    if not OPENAI_API_KEY:
+        raise HTTPException(status_code=500, detail="OPENAI_API_KEY が設定されてないよ")
 
+    messages = [
+        {
+            "role": "system",
+            "content": "日本語でカジュアルに答えてください。"
+        }
+    ]
+    for h in body.history:
+        messages.append({"role": h.role, "content": h.content})
+    messages.append({"role": "user", "content": body.message})
+
+    resp = requests.post(
+        OPENAI_API_URL,
+        headers={
+            "Authorization": f"Bearer {OPENAI_API_KEY}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "model": "gpt-4o-mini",
+            "messages": messages,
+        },
+        timeout=30,
+    )
+
+    if resp.status_code != 200:
+        print("OpenAI error:", resp.status_code, resp.text)
+        raise HTTPException(
+            status_code=500,
+            detail=f"OpenAI error {resp.status_code}: {resp.text}"
+        )
+
+    data = resp.json()
+    reply_text = data["choices"][0]["message"]["content"]
+    return ChatResponse(reply=reply_text)
 
 
 """

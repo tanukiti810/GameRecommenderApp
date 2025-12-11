@@ -103,7 +103,7 @@ h1 {
 
 /* ChooseBox */
 .ChooseBox {
-  width: 80%;
+  width: 100%;
   min-height: calc(100vh - 10vh);
   margin-top: 10vh;
   padding: 12px;
