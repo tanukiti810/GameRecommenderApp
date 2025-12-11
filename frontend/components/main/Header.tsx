@@ -10,9 +10,9 @@ const Header = () => {
         <div className='liquid-glass-card-header'>
             <div className='header-outline'>
                 <Title />
-                <div>
+                {/* <div>
                     <Button className='Filled-Button' variant="contained" onClick={() => router.push('/sign-in')}>Sign In/Up</Button>
-                </div>
+                </div> */}
             </div>
         </div>
     )

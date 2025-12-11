@@ -166,9 +166,11 @@ h1 {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -280,7 +282,7 @@ h1 {
   align-items: center;
   gap: 12px;
   margin: 0 auto;
-  margin-top: 4px;
+  margin-top: 18px;
   position: fixed;
   bottom: 20px;
   left: 50%;
@@ -627,4 +629,31 @@ button.liquid-glass-button:hover {
 
 .MuiDivider-root {
   border-color: rgba(102, 192, 244, 0.1) !important;
+}
+
+.selectPage {
+  height: 100vh;
+  padding: 18px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.select-chat {
+  margin: 40px;
+}
+
+.select-choose {
+  margin: 40px;
+}
+
+
+/* MUI Slider valueLabel の文字色を body に合わせる */
+.MuiSlider-markLabel{
+  color: #E8E8E8 !important;
+}
+
+/* 必要に応じて背景色も変更 */
+.MuiSlider-valueLabel-circle {
+  background-color: rgba(27, 40, 56, 0.9) !important;
 }
