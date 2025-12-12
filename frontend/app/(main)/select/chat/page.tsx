@@ -19,6 +19,7 @@ export default function ChatPage() {
     sender: "ai",
   },
 ]);
+const [isLoading, setIsLoading] = useState(false);
 
   const handleSend = async (text: string) => {
     const trimmed = text.trim();
@@ -32,7 +33,7 @@ export default function ChatPage() {
       sender: "user",
     };
     setMessages((prev) => [...prev, userMsg]);
-
+    setIsLoading(true);
     try {
 
       const historyForApi = [...messages, userMsg].map((m) => ({
@@ -78,13 +79,15 @@ export default function ChatPage() {
         sender: "ai",
       };
       setMessages((prev) => [...prev, errorMsg]);
+    }finally{
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="background">
       <div className="chatPage">
-        <ChatWindow messages={messages} />
+        <ChatWindow messages={messages}isLoading={isLoading}/>
         <ChatInput onSend={handleSend} />
       </div>
     </div>

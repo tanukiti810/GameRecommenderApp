@@ -9,9 +9,10 @@ interface Message {
 
 interface ChatWindowProps {
     messages: Message[];
+    isLoading?: boolean;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ messages }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ messages,isLoading }) => {
     const chatEndRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -24,6 +25,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages }) => {
                 {messages.map(msg => (
                     <MessageItem key={msg.id} text={msg.text} sender={msg.sender} />
                 ))}
+                {isLoading && (
+                    <MessageItem
+                        text="..."
+                        sender="ai"
+                    />
+                )}
                 <div ref={chatEndRef} />
             </div>
         </div>
