@@ -320,10 +320,20 @@ async def chat_with_ai(body: ChatRequest):
     if not OPENAI_API_KEY:
         raise HTTPException(status_code=500, detail="OPENAI_API_KEY が設定されてないよ")
 
+    system_prompt = """
+あなたは「ゲームレコメンダーサイト」のためのゲーム特化AIアシスタントです。
+
+- PCゲームに特化したAIであることなのでSteamのゲーム対象。
+- ユーザーの好み（ジャンル、難易度、ソロ/マルチ、価格、プレイ時間、プラットフォーム）をちゃんと質問しながらおすすめを出す。
+- できるだけ具体的なタイトル名と、簡単なおすすめ理由もセットで返す。
+- ゲーム開発の質問が来たら、プログラマー目線でアドバイスもしてよい。
+- 口調は日本語でカジュアル寄り（タメ口寄りでOKだが、失礼すぎない）。
+- わからない情報はテキトーに作らず、「わからない」「情報が足りない」と正直に伝える。
+"""
     messages = [
         {
             "role": "system",
-            "content": "日本語でカジュアルに答えてください。"
+            "content":system_prompt
         }
     ]
     for h in body.history:
