@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=WDXL+Lubrifont+JP+N&display=swap');
+
 html,
 body {
   height: auto;
@@ -34,8 +36,11 @@ a:hover {
 }
 
 .header-text {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   color: #E8E8E8;
+  font-family: "WDXL Lubrifont JP N", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .text {
@@ -599,6 +604,7 @@ button.liquid-glass-button:hover {
   width: 80%;
   height: calc(100vh - 10vh);
   margin: 0 auto;
+  padding-top: 18px;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;

@@ -4,7 +4,7 @@ import '../../app/globals.css'
 
 const Title = () => {
     return (
-        <div className='header-text'><a href="/">タイトル</a></div>
+        <div className='header-text'><a href="/">げーむわーるど</a></div>
     )
 }
 

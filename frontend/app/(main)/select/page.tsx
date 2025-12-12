@@ -36,7 +36,7 @@ const GameSelect = () => {
               {/* サブタイトル */}
               <div style={{ height: 48, textAlign: "center" }}>
                 <Typography sx={{ color: 'text.secondary', fontSize: 24 }}>
-                  ーサブタイトルー
+                  AIとの対話でやりたいゲームを探す
                 </Typography>
               </div>
 
