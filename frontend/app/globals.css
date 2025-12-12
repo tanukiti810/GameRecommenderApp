@@ -98,6 +98,8 @@ h1 {
   padding: 12px;
   box-sizing: border-box;
   color: #E8E8E8;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* ListItemButton hover */
