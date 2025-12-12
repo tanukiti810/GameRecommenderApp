@@ -3,28 +3,77 @@ import { useState } from "react";
 import ChatWindow from "../../../../components/main/chat-main/ChatWindow";
 import ChatInput from "../../../../components/main/chat-main/ChatInput";
 
+type Sender = "user" | "ai";
+
+interface Message {
+  id: string;
+  text: string;
+  sender: Sender;
+}
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<{ id: string; text: string; sender: "user" | "ai" }[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
 
-  const handleSend = (text: string) => {
-    const userMsg = {
-      id: crypto.randomUUID(),
-      text,
-      sender: "user" as const
-    };
-    setMessages(prev => [...prev, userMsg]);
-    //ここでAIの返答を設定
-    const aiMsg = {
-      id: crypto.randomUUID(),
-      text: "AIの返信です",
-      sender: "ai" as const
-    };
+  const handleSend = async (text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed) return;
 
-    setTimeout(() => setMessages(prev => [...prev, aiMsg]), 500);
+ 
+
+    const userMsg: Message = {
+      id: crypto.randomUUID(),
+      text: trimmed,
+      sender: "user",
+    };
+    setMessages((prev) => [...prev, userMsg]);
+
+    try {
+
+      const historyForApi = [...messages, userMsg].map((m) => ({
+        role: m.sender === "user" ? "user" : "assistant",
+        content: m.text,
+      }));
+
+
+      const res = await fetch("http://localhost:8000/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: trimmed,
+          history: historyForApi,
+        }),
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error("chat api error", res.status, errText);
+        const errorMsg: Message = {
+          id: crypto.randomUUID(),
+          text: "ごめん、サーバー側でエラー出てるっぽい…🙏",
+          sender: "ai",
+        };
+        setMessages((prev) => [...prev, errorMsg]);
+        return;
+      }
+
+      const data: { reply: string } = await res.json();
+
+      const aiMsg: Message = {
+        id: crypto.randomUUID(),
+        text: data.reply,
+        sender: "ai",
+      };
+      setMessages((prev) => [...prev, aiMsg]);
+    } catch (e) {
+      console.error(e);
+      const errorMsg: Message = {
+        id: crypto.randomUUID(),
+        text: "ネットワークエラーっぽい…もう一回送ってみて！",
+        sender: "ai",
+      };
+      setMessages((prev) => [...prev, errorMsg]);
+    }
   };
-
-
 
   return (
     <div className="background">
@@ -35,4 +84,3 @@ export default function ChatPage() {
     </div>
   );
 }
-
