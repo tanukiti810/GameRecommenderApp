@@ -1,124 +1,273 @@
-
+import json
 import time
+from pathlib import Path
 from typing import Optional, Tuple
 
 import requests
-from bson import ObjectId
 from .db import games_col
 
 STEAM_APPDETAILS_URL = "https://store.steampowered.com/api/appdetails"
 
+# retry_429 をコンテナ内に保存（volume マウントされてるならホストにも残る）
+RETRY_429_PATH = Path(__file__).resolve().parent / "retry_429_appids.json"
 
-def fetch_price_and_description(
-    appid: int,
-) -> Optional[Tuple[int, str, int, str]]:
 
+class RateLimit429(Exception):
+    def __init__(self, appid: int):
+        super().__init__(f"429 rate limited for appid={appid}")
+        self.appid = appid
+
+
+def _load_retry_429() -> list[int]:
+    if not RETRY_429_PATH.exists():
+        return []
+    try:
+        data = json.loads(RETRY_429_PATH.read_text(encoding="utf-8"))
+        return [int(x) for x in data]
+    except Exception:
+        return []
+
+
+def _save_retry_429(appids: list[int]) -> None:
+    uniq = sorted(set(int(x) for x in appids))
+    RETRY_429_PATH.write_text(json.dumps(uniq, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _add_retry_429(appid: int) -> None:
+    appids = _load_retry_429()
+    appids.append(int(appid))
+    _save_retry_429(appids)
+
+
+def fetch_price_and_description(appid: int) -> Optional[Tuple[int, str, int, str]]:
+    """
+    日本ストアの価格(JPY)と説明文(日本語優先)を取得。
+    429 のときは RateLimit429 を投げる。
+    """
     params = {
         "appids": str(appid),
-        "cc": "jp",  # 日本ストア
-        "filters": "price_overview,description",
+        "cc": "jp",          # 日本ストア（価格）
+        "l": "japanese",     # 日本語（テキスト）
+        # filters は外す：短文だけ英語/取りこぼしが起きやすいので安全側
     }
 
-    try:
-        resp = requests.get(STEAM_APPDETAILS_URL, params=params, timeout=10)
-        resp.raise_for_status()
-    except Exception as e:
-        print(f"[ERROR] appid={appid} へのリクエストに失敗: {e}")
-        return None
+    resp = requests.get(STEAM_APPDETAILS_URL, params=params, timeout=15)
+
+    if resp.status_code == 429:
+        raise RateLimit429(appid)
+
+    resp.raise_for_status()
 
     data = resp.json()
     app_entry = data.get(str(appid))
     if not app_entry or not app_entry.get("success"):
-        print(f"[SKIP] appid={appid}: success=False or data なし")
         return None
 
-    data_block = app_entry.get("data", {})
-
-    if not isinstance(data_block,dict):
-        print(f"[SKIP]appid={appid}: unexpected data type {type(data_block)}")
+    data_block = app_entry.get("data")
+    if not isinstance(data_block, dict):
         return None
 
+    # --- 価格 ---
     price_info = data_block.get("price_overview")
-    if not price_info:
-        # 無料ゲームとか価格情報がないもの
-        print(f"[SKIP] appid={appid}: price_overview なし（無料や非販売など）")
+    if not isinstance(price_info, dict):
+        # 無料/販売停止/地域制限など
         return None
 
-    currency: str = price_info.get("currency", "")
+    currency = str(price_info.get("currency", ""))
     final_raw = price_info.get("final")
     if final_raw is None:
-        print(f"[SKIP] appid={appid}: final なし")
         return None
 
-    price_jpy = int(round(final_raw / 100))
+    try:
+        final_raw_int = int(final_raw)
+    except Exception:
+        return None
 
-    # --- 説明文 ---
-    short_desc: str = data_block.get("short_description") or ""
+    # Steam はだいたい最小単位(×100)で来るので /100
+    price_jpy = final_raw_int // 100
+
+    # 日本円以外は今回いじらない（jp指定でも例外がある）
+    if currency != "JPY":
+        return None
+
+    # --- 説明文（日本語が無いタイトルは英語になるのは仕様） ---
+    desc = (
+        data_block.get("short_description")
+        or data_block.get("about_the_game")
+        or data_block.get("detailed_description")
+        or ""
+    )
+
+    return price_jpy, currency, final_raw_int, str(desc)
 
 
-    return price_jpy, currency, int(final_raw), short_desc
+def is_already_done(doc: dict) -> bool:
+    """
+    「JPY価格が妥当 + description がある」なら完了扱い。
+    価格は price_raw//100 と price が一致してるかで判定。
+    """
+    currency_ok = doc.get("currency") == "JPY"
+    price = doc.get("price")
+    price_raw = doc.get("price_raw")
+    price_ok = (
+        currency_ok
+        and isinstance(price, (int, float))
+        and isinstance(price_raw, int)
+        and int(price) == int(price_raw) // 100
+    )
+
+    desc = doc.get("description")
+    desc_ok = isinstance(desc, str) and len(desc.strip()) > 0
+
+    return price_ok and desc_ok
 
 
-def update_all_prices_and_descriptions(sleep_sec: float = 0.5) -> None:
+def update_doc_if_needed(doc: dict, fetched: Tuple[int, str, int, str]) -> bool:
+    """
+    doc に不足があるところだけ $set する（上書き最小化）。
+    戻り値: 更新したら True
+    """
+    price_jpy, currency, final_raw_int, desc = fetched
 
+    update_doc = {}
+
+    # 価格：すでに正しい JPY が入ってるなら触らない
+    cur = doc.get("currency")
+    price = doc.get("price")
+    price_raw = doc.get("price_raw")
+    already_price_ok = (
+        cur == "JPY"
+        and isinstance(price_raw, int)
+        and isinstance(price, (int, float))
+        and int(price) == int(price_raw) // 100
+    )
+    if not already_price_ok:
+        update_doc["price"] = int(price_jpy)
+        update_doc["currency"] = currency
+        update_doc["price_raw"] = int(final_raw_int)
+
+    # description：すでに入ってるなら触らない（上書きしない）
+    existing_desc = doc.get("description")
+    if not (isinstance(existing_desc, str) and existing_desc.strip()):
+        if isinstance(desc, str) and desc.strip():
+            update_doc["description"] = desc
+
+    if not update_doc:
+        return False
+
+    res = games_col.update_one({"_id": doc["_id"]}, {"$set": update_doc})
+    return res.modified_count > 0
+
+
+def run_all_only_missing(sleep_sec: float = 0.5) -> None:
+    """
+    全件走査。ただし「すでに完成してるもの」はスキップ。
+    429 は retry_429_appids.json に貯める。
+    """
     cursor = games_col.find({"platform": "steam"})
 
-    total = 0
+    scanned = 0
     updated = 0
+    skipped_done = 0
+    rate_limited = 0
 
     for doc in cursor:
-        total += 1
-        doc_id = doc.get("_id")
-        appid = doc.get("appid") or doc.get("platform_id")
+        scanned += 1
+        appid = doc.get("platform_id") or doc.get("appid")
+        if appid is None:
+            continue
+        appid = int(appid)
 
-        if not isinstance(appid, (int, float, str)):
-            print(f"[SKIP] _id={doc_id}: appid 不正 {appid!r}")
+        if is_already_done(doc):
+            skipped_done += 1
             continue
 
-        appid_int = int(appid)
+        try:
+            fetched = fetch_price_and_description(appid)
+            if fetched is None:
+                continue
 
-        print(f"\n=== appid={appid_int} | name={doc.get('name')} ===")
-        before_price = doc.get("price")
+            if update_doc_if_needed(doc, fetched):
+                updated += 1
 
-        result = fetch_price_and_description(appid_int)
-        if result is None:
-            continue
+        except RateLimit429:
+            rate_limited += 1
+            _add_retry_429(appid)
+            print(f"[429] appid={appid} → retry_429 に追加")
+            # 429 のときは少し長めに休むと通りやすい
+            time.sleep(max(2.0, sleep_sec))
 
-        price_jpy, currency, final_raw, short_desc = result
+        except Exception as e:
+            print(f"[ERROR] appid={appid}: {e}")
 
-        update_doc = {
-            "price": price_jpy,             # JPY で上書き
-            "currency": currency,           # "JPY"
-            "price_raw": final_raw,         # Steam の生の値
-        }
-
-        if short_desc:
-            # main.py は short_description を優先して description を fallback に使ってるので、
-            # ここでは両方同じ値を入れておく。
-            update_doc["short_description"] = short_desc
-            update_doc["description"] = short_desc
-
-        res = games_col.update_one(
-            {"_id": ObjectId(doc_id)},
-            {"$set": update_doc},
-        )
-
-        if res.modified_count:
-            updated += 1
-
-        print(
-            f"[UPDATED] appid={appid_int}: price {before_price} -> {price_jpy} ({currency}), "
-            f"short_description set={bool(short_desc)}, "
-            f"matched={res.matched_count}, modified={res.modified_count}"
-        )
-
-        # API 叩きすぎ防止（適当に調整してOK）
         time.sleep(sleep_sec)
 
     print("\n=== DONE ===")
-    print(f"total scanned:  {total}")
-    print(f"total updated:  {updated}")
+    print(f"scanned={scanned}, updated={updated}, skipped_done={skipped_done}, 429_saved={rate_limited}")
+    print(f"retry file: {RETRY_429_PATH}")
+
+
+def run_retry_429_only(sleep_sec: float = 1.0) -> None:
+    """
+    retry_429_appids.json に入ってる appid だけ再実行。
+    すでに完成してたらリストから削除。
+    """
+    appids = _load_retry_429()
+    if not appids:
+        print("[INFO] retry_429_appids.json が空。やることなし")
+        return
+
+    remaining: list[int] = []
+    total = len(appids)
+
+    for i, appid in enumerate(appids, start=1):
+        print(f"\n=== RETRY ({i}/{total}) appid={appid} ===")
+
+        doc = games_col.find_one({"platform": "steam", "platform_id": appid})
+        if not doc:
+            doc = games_col.find_one({"platform": "steam", "appid": appid})
+
+        if not doc:
+            print("[SKIP] DBに見つからない")
+            continue
+
+        if is_already_done(doc):
+            print("[OK] すでに完了してるのでリストから除外")
+            continue
+
+        try:
+            fetched = fetch_price_and_description(appid)
+            if fetched is None:
+                print("[SKIP] 取得できなかった（無料/制限/データなし等）→ 残す")
+                remaining.append(appid)
+            else:
+                changed = update_doc_if_needed(doc, fetched)
+                print(f"[OK] 更新: {changed}")
+                # 更新できた/できなくても、次回に残すかは「まだ未完了か」で判断
+                doc2 = games_col.find_one({"_id": doc["_id"]})
+                if doc2 and not is_already_done(doc2):
+                    remaining.append(appid)
+
+        except RateLimit429:
+            print("[429] まだレート制限 → 残す")
+            remaining.append(appid)
+            time.sleep(max(3.0, sleep_sec))
+
+        except Exception as e:
+            print(f"[ERROR] appid={appid}: {e}")
+            remaining.append(appid)
+
+        time.sleep(sleep_sec)
+
+    _save_retry_429(remaining)
+    print(f"\n[INFO] retry_429 残り: {len(remaining)} 件")
+    print(f"retry file: {RETRY_429_PATH}")
 
 
 if __name__ == "__main__":
-    update_all_prices_and_descriptions()
+    import sys
+
+    if "--retry-429" in sys.argv:
+        run_retry_429_only()
+    else:
+        run_all_only_missing()
