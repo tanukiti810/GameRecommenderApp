@@ -330,7 +330,7 @@ h1 {
 }
 
 .liquid-glass-card-side {
-  width: 100%;
+  width: 20%;
   height: calc(100vh - 18vh);
   margin-top: 18vh;
   position: sticky;
