@@ -18,7 +18,7 @@ export default function RootLayout({
         {/* <Particles /> */}
         <div className="background">
           <SwitchHeader />
-          <div className="top-margin">{children}</div>
+          <div>{children}</div>
         </div>
       </body>
     </html>

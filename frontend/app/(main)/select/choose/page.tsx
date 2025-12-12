@@ -49,12 +49,12 @@ export default function ChoosePage() {
   }, [games]);
 
   return (
-    <div style={{ display: "flex", gap: 16 }}>
+    <div style={{ display: "flex", gap: 16, height: "auto", overflow: "hidden" }}>
       {/* 左フィルタ */}
       <SidebarSelect onResults={setGames} />
 
       {/* 右の一覧 */}
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, overflowY: "auto", overflowX: "hidden", height: "100vh"}}>
         <SelectedGames games={uniqueDisplayGames} />
       </div>
     </div>
