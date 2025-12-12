@@ -337,7 +337,7 @@ async def chat_with_ai(body: ChatRequest):
             "Content-Type": "application/json",
         },
         json={
-            "model": "gpt-4o-mini",
+            "model": "gpt-5-mini",
             "messages": messages,
         },
         timeout=30,
