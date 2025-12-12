@@ -12,7 +12,13 @@ interface Message {
 }
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+  {
+    id: "welcome-ai",
+    text: "ゲームの事なら何でも聞いて！何か質問ある？",
+    sender: "ai",
+  },
+]);
 
   const handleSend = async (text: string) => {
     const trimmed = text.trim();
