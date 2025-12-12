@@ -262,6 +262,11 @@ const buildPayloadFromChecked = (checkedIds: string[]): ChoosePayload => {
 const sendDataDebounced = (payload: ChoosePayload) => {
   if (debounceRef.current) clearTimeout(debounceRef.current);
 
+  if(payload.genres.length === 0 && payload.tags.length === 0){
+    onResults([])
+    return;
+  }
+
   debounceRef.current = setTimeout(async () => {
     try {
       const response = await fetch("http://localhost:8000/api/choose", {

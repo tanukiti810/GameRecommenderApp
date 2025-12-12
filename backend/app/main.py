@@ -38,6 +38,87 @@ TAG_ALIAS: dict[str, str] = {
     # 必要になったらここに増やしていけばOK
 }
 
+ALL_TAGS: set[str] = {
+    "4X",
+    "ARPG",
+    "AlternateHistory",
+    "Ancient",
+    "Anime",
+    "AutoBattler",
+    "Baseball",
+    "Basketball",
+    "BattleRoyale",
+    "Boxing",
+    "Builder",
+    "Building",
+    "BulletHell",
+    "CRPG",
+    "CardBattler",
+    "ChoicesMatter",
+    "Clicker",
+    "Coop",
+    "Cozy",
+    "Crafting",
+    "Cyberpunk",
+    "Drama",
+    "DungeonCrawler",
+    "Emotional",
+    "Exploration",
+    "FPS",
+    "Fantasy",
+    "FarmingSim",
+    "Fighting",
+    "Fishing",
+    "Flight",
+    "Golf",
+    "GrandStrategy",
+    "HackAndSlash",
+    "HandDrawn",
+    "Horror",
+    "JRPG",
+    "LifeSim",
+    "LocalCoop",
+    "LoreRich",
+    "LowPoly",
+    "MMORPG",
+    "MOBA",
+    "Management",
+    "Match3",
+    "Medieval",
+    "Metroidvania",
+    "Moddable",
+    "Mystery",
+    "Mythology",
+    "OnlineCoop",
+    "PixelGraphics",
+    "Platformer",
+    "Puzzle",
+    "PvE",
+    "PvP",
+    "RTS",
+    "Racing",
+    "Relaxing",
+    "RogueLite",
+    "Roguelike",
+    "RoguelikeDeckbuilder",
+    "Sandbox",
+    "SciFi",
+    "Soccer",
+    "SoulsLike",
+    "SpaceSim",
+    "StoryRich",
+    "Stylized",
+    "Supernatural",
+    "SurvivalHorror",
+    "TBS",
+    "ThirdPersonShooter",
+    "TowerDefense",
+    "TurnBased",
+    "VehicleSim",
+    "VisualNovel",
+    "WalkingSimulator",
+    "WorldWar",
+}
 
 ALLOWED_GENRES = {
     "Action",
@@ -105,7 +186,7 @@ def choose_game(data: Choice):
 
     # タグは AND 条件（全部含んでるゲームだけ）
     if normalized_tags:
-        query["tags_list"] = {"$all": normalized_tags}
+        query["tags_list"] = {"$in": normalized_tags}
 
     # 3) 実際に検索
     cursor = games_col.find(query).limit(limit)
@@ -130,11 +211,11 @@ def choose_game(data: Choice):
 
         games.append(
             {
-                "id": appid,
-                "title": name,
+                "appid": appid,
+                "name": name,
                 "price": price,
                 "image": image,
-                "description": description,
+                "short_description": description,
             }
         )
 
